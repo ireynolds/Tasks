@@ -10,12 +10,14 @@ namespace Tasks.Common
 {
     public static class NavigationExtensions
     {
-        private const string _prefix = "/Views";
+        private const string _prefix = "/Views/";
 
-        private const string ItemsPagePath = _prefix + "/ItemsPage.xaml";
-        private const string ItemCreateEditPagePath = _prefix + "/Items/CreateEditPage.xaml";
-        private const string ItemDetailsPagePath = _prefix + "/Items/DetailsPage.xaml";
-        private const string GroupsPagePath = _prefix + "/GroupsPage.xaml";
+        private const string ItemsPagePath = _prefix + "ItemsPage.xaml";
+        private const string ItemCreateEditPagePath = _prefix + "Items/CreateEditPage.xaml";
+        private const string ItemDetailsPagePath = _prefix + "Items/DetailsPage.xaml";
+        private const string GroupsPagePath = _prefix + "GroupsPage.xaml";
+        private const string GroupDetailsEditPagePath = _prefix + "Groups/DetailsEditPage.xaml";
+        private const string GroupItemsEditPagePath = _prefix + "Groups/ItemsEditPage.xaml";
 
         public static void Navigate(this NavigationService Nav, string Uri)
         {
@@ -62,6 +64,21 @@ namespace Tasks.Common
         public static void OpenGroups(this NavigationService Nav)
         {
             Nav.Navigate(GroupsPagePath);
+        }
+
+        public static void OpenEditGroupDetails(this NavigationService Nav, int Id)
+        {
+            Nav.Navigate(String.Format("{0}?id={1}&mode={2}", GroupDetailsEditPagePath, Id, (int)Mode.Edit));
+        }
+
+        public static void OpenCreateGroup(this NavigationService Nav)
+        {
+            Nav.Navigate(String.Format("{0}?mode={1}", ItemCreateEditPagePath, (int)Mode.Create));
+        }
+
+        public static void OpenEditGroupItems(this NavigationService Nav, int Id)
+        {
+            Nav.Navigate(String.Format("{0}?id={1}", GroupItemsEditPagePath, Id));
         }
     }
 }
