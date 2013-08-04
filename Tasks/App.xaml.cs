@@ -66,9 +66,6 @@ namespace Tasks
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
             App.Database = DbManager.EnsureCreated();
-
-            // Renew testing data
-            // App.Database.MakeFixtures();
         }
 
         // Code to execute when the application is activated (brought to foreground)

@@ -73,14 +73,8 @@ namespace Tasks // ViewModels
             {
                 if (_items == null)
                 {
-                    var all = new List<Item>(from item in Item.All
-                                             select item);
-                    var ids = new List<int>(from entry in App.Database.GroupItemJoins
-                                            where entry._groupId == Id
-                                            select entry._itemId);
-                    var items = new List<Item>(from id in ids
-                                               select Item.FindWithId(id));
-                    _items = new ObservableCollection<Item>(items);
+                    _items = new ObservableCollection<Item>();
+                    ReloadItems();
                 }
 
                 return _items;
@@ -90,6 +84,17 @@ namespace Tasks // ViewModels
         public void Reload()
         {
             App.Database.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, this);
+            ReloadItems();
+        }
+
+        private void ReloadItems()
+        {
+            var query = from entry in App.Database.GroupItemJoins
+                        where entry._groupId == Id
+                        select Item.FindWithId(entry._itemId);
+
+            _items.Clear();
+            foreach (var item in query) _items.Add(item);
         }
 
         public bool Exists()

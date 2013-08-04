@@ -98,5 +98,11 @@ namespace Tasks.Views
             var item = (sender as LongListMultiSelectorItem).DataContext as Item;
             NavigationService.OpenItemDetails(item.Id);
         }
+
+        private void MakeFixtures(object sender, EventArgs e)
+        {
+            App.Database.MakeFixtures();
+            this.DataContext = Group.Inbox;
+        }
     }
 }
