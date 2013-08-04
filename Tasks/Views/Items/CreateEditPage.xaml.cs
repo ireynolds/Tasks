@@ -27,7 +27,16 @@ namespace Tasks.Views.Items
             }
         }
 
-        private Mode Mode;
+        private Mode _mode;
+        public Mode Mode
+        {
+            get { return _mode; }
+            set 
+            { 
+                _mode = value;
+                PageTitle.Text = _mode.ToString().ToLower();
+            }
+        }
 
         public CreateEditPage()
         {
