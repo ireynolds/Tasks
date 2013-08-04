@@ -19,5 +19,15 @@ namespace Tasks // Models
         [Column]
         public string _description;
 
+        public override bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != this.GetType()) return false;
+            return (obj as Group).Id == this.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
     }
 }

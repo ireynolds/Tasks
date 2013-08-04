@@ -24,15 +24,12 @@ namespace Tasks
         public override bool Equals(object obj)
         {
             if (obj == null || obj.GetType() != this.GetType()) return false;
-            return (obj as Item).Id == this.Id &&
-                   (obj as Item).Title.Equals(this.Title);
+            return (obj as Item).Id == this.Id;
         }
 
         public override int GetHashCode()
         {
-            var hash = 17 * Id;
-            hash = 17 * hash + Title.GetHashCode();
-            return hash;
+            return Id.GetHashCode();
         }
     }
 }
