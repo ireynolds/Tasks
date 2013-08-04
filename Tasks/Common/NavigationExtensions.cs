@@ -73,7 +73,7 @@ namespace Tasks.Common
 
         public static void OpenCreateGroup(this NavigationService Nav)
         {
-            Nav.Navigate(String.Format("{0}?mode={1}", ItemCreateEditPagePath, (int)Mode.Create));
+            Nav.Navigate(String.Format("{0}?mode={1}", GroupDetailsEditPagePath, (int)Mode.Create));
         }
 
         public static void OpenEditGroupItems(this NavigationService Nav, int Id)
