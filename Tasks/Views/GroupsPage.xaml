@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:groups="clr-namespace:Tasks.Views.Groups"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -16,8 +17,16 @@
 
     <phone:PhoneApplicationPage.Resources>
         <DataTemplate x:Key="ItemTemplate">
-            <groups:GroupPartial Tap="Group_Tap" />
+            <groups:GroupPartial Tap="Group_Tap" Margin="0,0,0,18" />
         </DataTemplate>
+        <shell:ApplicationBar x:Key="DefaultAppBar">
+            <shell:ApplicationBarIconButton Text="select" Click="Select" IconUri="Assets/Icons/appbar.select.png" />
+            <shell:ApplicationBarIconButton Text="new" Click="New" IconUri="Assets/Icons/appbar.add.png" />
+        </shell:ApplicationBar>
+        <shell:ApplicationBar x:Key="SelectedAppBar">
+            <shell:ApplicationBarIconButton Text="ok" Click="Ok" IconUri="Assets/Icons/appbar.check.png" />
+            <shell:ApplicationBarIconButton Text="cancel" Click="Cancel" IconUri="Assets/Icons/appbar.cancel.png" />
+        </shell:ApplicationBar>
     </phone:PhoneApplicationPage.Resources>
     
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -35,11 +44,12 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <ListBox Name="GroupsList"
-                     ItemsSource="{Binding Groups}"
-                     ItemTemplate="{StaticResource ItemTemplate}"
-                     Margin="12,0,0,0">
-            </ListBox>
+            <toolkit:LongListMultiSelector Name="GroupsList"
+                                           ItemsSource="{Binding Groups}"
+                                           ItemTemplate="{StaticResource ItemTemplate}"
+                                           Margin="-12,0,0,0"
+                                           SelectionChanged="GroupsList_SelectionChanged">
+            </toolkit:LongListMultiSelector>
         </Grid>
     </Grid>
 

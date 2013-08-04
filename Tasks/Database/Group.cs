@@ -14,6 +14,16 @@ namespace Tasks // Database
             get { return App.Database.Groups; }
         }
 
+        public static IQueryable<Group> AllExceptInbox
+        {
+            get 
+            {
+                return from grp in All
+                       where grp._id != Inbox.Id
+                       select grp; 
+            }
+        }
+
         private static Group _inbox;
         public static Group Inbox
         {
@@ -59,6 +69,14 @@ namespace Tasks // Database
             }
 
             return group;
+        }
+
+        public static void MergeIntoInbox(Group Group)
+        {
+            foreach (var item in Group.Items)
+            {
+                Inbox.AddItem(item.Clone());
+            }
         }
 
         public static Group FindWithId(int Id)

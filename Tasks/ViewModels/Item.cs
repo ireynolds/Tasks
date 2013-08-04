@@ -61,6 +61,11 @@ namespace Tasks
             }
         }
 
+        public Item Clone()
+        {
+            return Item.Create(Title, Description);
+        }
+
         private void Insert()
         {
             App.Database.Items.InsertOnSubmit(this);

@@ -16,7 +16,7 @@ namespace Tasks.ViewModels
             {
                 if (_groups == null)
                 {
-                    _groups = new ObservableCollection<Group>(App.Database.Groups);
+                    _groups = new ObservableCollection<Group>(Group.AllExceptInbox);
                 }
 
                 return _groups;
