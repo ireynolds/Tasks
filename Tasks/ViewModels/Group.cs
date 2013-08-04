@@ -102,7 +102,7 @@ namespace Tasks // ViewModels
             return this.Equals(Group.FindWithId(Id));
         }
 
-        private void Save()
+        public void Save()
         {
             if (!this.Exists())
             {
