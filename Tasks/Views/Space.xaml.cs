@@ -116,11 +116,17 @@ namespace Tasks.Views
 
         private void Ok(object sender, EventArgs e)
         {
-            foreach (Group group in GroupsList.SelectedItems)
+            var title = String.Format("Merge into {0}?", Group.Title);
+            var message = String.Format("All the selected groups will be merged into {0}.", Group.Title);
+            
+            Utils.Confirm(title, message, () =>
             {
-                Group.MergeIntoThis(group);
-            }
-            NavigationService.TryGoBack();
+                foreach (Group group in GroupsList.SelectedItems)
+                {
+                    Group.MergeIntoThis(group);
+                }
+                NavigationService.TryGoBack();
+            }, "merge", "cancel");
         }
 
         private void Cancel(object sender, EventArgs e)
