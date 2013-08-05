@@ -25,11 +25,12 @@
             <shell:ApplicationBarIconButton Text="new" Click="New" IconUri="Assets/Icons/appbar.add.png" />
             <shell:ApplicationBarIconButton Text="group" Click="Groups" IconUri="Assets/Icons/appbar.column.add.png" />
             <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="delete" Click="DeleteGroup" />
                 <shell:ApplicationBarMenuItem Text="make fixtures" Click="MakeFixtures" />
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
         <shell:ApplicationBar x:Key="SelectionAppBar">
-            <shell:ApplicationBarIconButton Text="delete" Click="Delete" IconUri="Assets/Icons/appbar.delete.png" />
+            <shell:ApplicationBarIconButton Text="delete" Click="DeleteItems" IconUri="Assets/Icons/appbar.delete.png" />
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.Resources>
     

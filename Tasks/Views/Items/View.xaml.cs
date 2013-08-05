@@ -47,8 +47,11 @@ namespace Tasks.Views.Items
 
         private void Delete(object sender, EventArgs e)
         {
-            Item.Delete();
-            NavigationService.TryGoBack();
+            Utils.Confirm("Delete item?", "This item will be deleted from your phone.", () =>
+            {
+                Item.Delete();
+                NavigationService.TryGoBack();
+            }, "delete", "cancel");
         }
     }
 }

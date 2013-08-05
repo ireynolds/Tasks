@@ -95,12 +95,15 @@ namespace Tasks.Views
             NavigationService.OpenSpace();
         }
 
-        private void Delete(object sender, EventArgs e)
+        private void DeleteItems(object sender, EventArgs e)
         {
-            foreach (Item item in ItemsList.SelectedItems.ToList<Item>())
+            Utils.Confirm("Delete items?", "All the selected items will be deleted from your phone.", () =>
             {
-                Group.DeleteItem(item);
-            }
+                foreach (Item item in ItemsList.SelectedItems.ToList<Item>())
+                {
+                    Group.DeleteItem(item);
+                }
+            }, "delete", "cancel");
         }
 
         private void ItemsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -125,6 +128,15 @@ namespace Tasks.Views
         {
             App.Database.MakeFixtures();
             Group = Group.Inbox;
+        }
+
+        private void DeleteGroup(object sender, EventArgs e)
+        {
+            Utils.Confirm("Delete group?", "All the items in this group will be deleted from your phone.", () =>
+            {
+                Group.Delete();
+                NavigationService.GoBack();
+            }, "delete", "cancel");
         }
     }
 }

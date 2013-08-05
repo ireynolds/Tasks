@@ -1,10 +1,12 @@
-﻿using Microsoft.Phone.Shell;
+﻿using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Navigation;
 using Tasks.Views;
 
@@ -41,6 +43,33 @@ namespace Tasks.Common
         public static T[] a<T>(params T[] args)
         {
             return args;
+        }
+
+        public static void Confirm(string Title, string Message, Action Action, string PostiveButtonContent = "continue", string NegativeButtonContent = "cancel")
+        {
+            var messageBox = new CustomMessageBox()
+            {
+                Caption = Title,
+                Message = Message,
+                LeftButtonContent = PostiveButtonContent,
+                RightButtonContent = NegativeButtonContent
+            };
+
+            messageBox.Dismissed += (s, e) =>
+            {
+                switch (e.Result)
+                {
+                    case CustomMessageBoxResult.LeftButton:
+                        Action();
+                        break;
+                    case CustomMessageBoxResult.RightButton:
+                        break;
+                    case CustomMessageBoxResult.None:
+                        break;
+                }
+            };
+
+            messageBox.Show();
         }
     }
 }
