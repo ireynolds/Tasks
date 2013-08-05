@@ -131,6 +131,8 @@ namespace Tasks // ViewModels
 
         public void AddItem(Item Item)
         {
+            if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
+
             var entry = new GroupItemJoinTable() { _groupId = Id, _itemId = Item.Id };
             Items.Add(Item);
             
@@ -140,6 +142,8 @@ namespace Tasks // ViewModels
 
         public void DeleteItem(Item Item)
         {
+            if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
+
             var entry = (from tuple in App.Database.GroupItemJoins
                         where tuple._groupId == Id && tuple._itemId == Item.Id
                         select tuple).First();
