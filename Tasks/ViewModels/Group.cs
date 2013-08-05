@@ -29,6 +29,12 @@ namespace Tasks // ViewModels
             set { SetProperty(ref _description, value); }
         }
 
+        public bool IsDeleted
+        {
+            get { return _isDeleted; }
+            set { _isDeleted = value; }
+        }
+
         public string ItemsString
         {
             get
@@ -137,8 +143,8 @@ namespace Tasks // ViewModels
                     this.DeleteItem(item);
                 }
 
-                App.Database.Groups.DeleteOnSubmit(this);
-                App.Database.SubmitChanges();
+                this.IsDeleted = true;
+                this.Save();
             }
         }
 

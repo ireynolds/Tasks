@@ -19,6 +19,12 @@ namespace Tasks // Models
         [Column]
         public string _description;
 
-        public Group() { }
+        [Column]
+        public bool _isDeleted;
+
+        public Group() 
+        {
+            _isDeleted = false;
+        }
     }
 }
