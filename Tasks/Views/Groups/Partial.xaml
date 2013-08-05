@@ -12,7 +12,7 @@
     <StackPanel Background="{StaticResource PhoneBackgroundBrush}">
         <TextBlock Margin="0,-12,0,0" Text="{Binding Title}" Style="{StaticResource PhoneTextExtraLargeStyle}" />
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding CountString}" Margin="0,0,3,0" Style="{StaticResource PhoneTextAccentStyle}" />
+            <TextBlock Text="{Binding CountString}" FontWeight="Bold" Margin="0,0,3,0" Style="{StaticResource PhoneTextAccentStyle}" />
             <TextBlock Text="{Binding ItemsString}" Style="{StaticResource PhoneTextSubtleStyle}" />
         </StackPanel>
     </StackPanel>

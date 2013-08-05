@@ -38,10 +38,18 @@ namespace Tasks
                 }
                 return _source;
             }
-            private set  
+            set  
             {
                 _sourceId = value.Id;
                 _source = value;
+            }
+        }
+
+        public string GroupName
+        {
+            get
+            {
+                return String.Format("[{0}]", Source.Title);
             }
         }
 
@@ -79,9 +87,14 @@ namespace Tasks
             }
         }
 
-        public Item Clone()
+        public Item CreateClone()
         {
             return Item.Create(Source, Title, Description);
+        }
+
+        public Item NewClone()
+        {
+            return Item.New(Source, Title, Description);
         }
 
         private void Insert()

@@ -74,7 +74,8 @@ namespace Tasks // Database
 
         public static Group FindWithIdOrDefault(int Id)
         {
-            return (from grp in All
+            // Make sure the search includes deleted groups.
+            return (from grp in App.Database.Groups
                     where grp._id == Id
                     select grp).FirstOrDefault();
         }

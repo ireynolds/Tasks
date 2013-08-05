@@ -23,6 +23,11 @@ namespace Tasks // ViewModels
             set { SetProperty(ref _title, value); }
         }
 
+        public string UppercaseTitle
+        {
+            get { return _title.ToUpper(); }
+        }
+
         public string Description
         {
             get { return _description; }
@@ -68,7 +73,7 @@ namespace Tasks // ViewModels
         {
             get
             {
-                return String.Format("({0} items)", Items.Count);
+                return String.Format("[{0} items]", Items.Count);
             }
         }
 
@@ -83,6 +88,20 @@ namespace Tasks // ViewModels
                 }
 
                 return _constituents;
+            }
+        }
+
+        private ObservableCollection<Group> _groups;
+        public ObservableCollection<Group> Groups
+        {
+            get 
+            {
+                if (_groups == null)
+                {
+                    _groups = new ObservableCollection<Group>();
+                    ReloadGroups();
+                }
+                return _groups; 
             }
         }
 
@@ -105,6 +124,7 @@ namespace Tasks // ViewModels
         {
             App.Database.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, this);
             ReloadItems();
+            ReloadGroups();
         }
 
         private void ReloadItems()
@@ -115,6 +135,16 @@ namespace Tasks // ViewModels
 
             _items.Clear();
             foreach (var item in query) _items.Add(item);
+        }
+
+        private void ReloadGroups()
+        {
+            var query = (from item in Items
+                         where item._sourceId != Id
+                         select Group.FindWithId(item._sourceId)).Distinct();
+
+            _groups.Clear();
+            foreach (var group in query) _groups.Add(group);
         }
 
         public bool Exists()
@@ -166,7 +196,7 @@ namespace Tasks // ViewModels
         {
             if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
 
-            Item = Item.Clone();
+            Item = Item.CreateClone();
             var entry = new GroupItemJoinTable() { _groupId = Id, _itemId = Item.Id };
             Items.Add(Item);
 
@@ -174,11 +204,14 @@ namespace Tasks // ViewModels
             App.Database.SubmitChanges();
         }
 
-        public void MergeIntoThis(Group group)
+        public void MergeIntoThis(Group Group)
         {
-            foreach (var item in group.Items)
+            _groups.Add(Group);
+            foreach (var item in Group.Items)
             {
-                this.MergeIntoThis(item);
+                var clone = item.NewClone();
+                clone.Source = Group;
+                this.MergeIntoThis(clone);
             }
         }
 
@@ -195,6 +228,7 @@ namespace Tasks // ViewModels
             App.Database.SubmitChanges();
 
             Item.Delete();
+            ReloadGroups();
         }
     }
 }

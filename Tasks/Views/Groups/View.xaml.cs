@@ -36,7 +36,7 @@ namespace Tasks.Views
                 _group = value;
                 this.DataContext = value;
 
-                DetailsBlock.Visibility = Group.Inbox.Equals(value) ? Visibility.Collapsed : Visibility.Visible;
+                //DetailsBlock.Visibility = Group.Inbox.Equals(value) ? Visibility.Collapsed : Visibility.Visible;
             }
         }
 
@@ -118,10 +118,15 @@ namespace Tasks.Views
             }
         }
 
-        private void LongListMultiSelectorItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        private void Item_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            var item = (sender as LongListMultiSelectorItem).DataContext as Item;
+            var item = (sender as ItemPartial).DataContext as Item;
             NavigationService.OpenItem(item.Id);
+        }
+
+        private void Group_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
         }
 
         private void MakeFixtures(object sender, EventArgs e)
@@ -137,6 +142,11 @@ namespace Tasks.Views
                 Group.Delete();
                 NavigationService.GoBack();
             }, "delete", "cancel");
+        }
+
+        private void GroupsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }
