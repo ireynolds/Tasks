@@ -20,16 +20,5 @@ namespace Tasks
         public string _description;        
 
         public Item() { }
-
-        public override bool Equals(object obj)
-        {
-            if (obj == null || obj.GetType() != this.GetType()) return false;
-            return (obj as Item).Id == this.Id;
-        }
-
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
     }
 }
