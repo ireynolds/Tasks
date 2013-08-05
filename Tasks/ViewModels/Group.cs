@@ -118,6 +118,11 @@ namespace Tasks // ViewModels
         {
             if (this.Exists())
             {
+                foreach (Item item in Items)
+                {
+                    item.Delete();
+                }
+
                 App.Database.Groups.DeleteOnSubmit(this);
                 App.Database.SubmitChanges();
             }
