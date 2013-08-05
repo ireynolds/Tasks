@@ -89,7 +89,7 @@ namespace Tasks.Views.Groups
             
             if (Mode == Mode.Create)
             {
-                NavigationService.OpenItems(Group.Id);
+                NavigationService.OpenGroup(Group.Id);
             }
             else
             {

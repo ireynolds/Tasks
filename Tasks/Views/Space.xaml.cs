@@ -95,7 +95,7 @@ namespace Tasks.Views
 
         private void Group_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            NavigationService.OpenItems(((sender as GroupPartial).DataContext as Group).Id);
+            NavigationService.OpenGroup(((sender as GroupPartial).DataContext as Group).Id);
         }
 
         private void Select(object sender, EventArgs e)

@@ -120,29 +120,26 @@
     <Compile Include="ViewModels\Group.cs" />
     <Compile Include="ViewModels\Space.cs" />
     <Compile Include="ViewModels\Item.cs" />
-    <Compile Include="Views\GroupsPage.xaml.cs">
-      <DependentUpon>GroupsPage.xaml</DependentUpon>
+    <Compile Include="Views\Space.xaml.cs">
+      <DependentUpon>Space.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Groups\DetailsEditPage.xaml.cs">
-      <DependentUpon>DetailsEditPage.xaml</DependentUpon>
+    <Compile Include="Views\Groups\EditDetails.xaml.cs">
+      <DependentUpon>EditDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Groups\GroupPartial.xaml.cs">
-      <DependentUpon>GroupPartial.xaml</DependentUpon>
+    <Compile Include="Views\Groups\Partial.xaml.cs">
+      <DependentUpon>Partial.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Groups\ItemsEditPage.xaml.cs">
-      <DependentUpon>ItemsEditPage.xaml</DependentUpon>
+    <Compile Include="Views\Groups\View.xaml.cs">
+      <DependentUpon>View.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ItemsPage.xaml.cs">
-      <DependentUpon>ItemsPage.xaml</DependentUpon>
+    <Compile Include="Views\Items\EditDetails.xaml.cs">
+      <DependentUpon>EditDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Items\CreateEditPage.xaml.cs">
-      <DependentUpon>CreateEditPage.xaml</DependentUpon>
+    <Compile Include="Views\Items\View.xaml.cs">
+      <DependentUpon>View.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Items\DetailsPage.xaml.cs">
-      <DependentUpon>DetailsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Items\ItemPartial.xaml.cs">
-      <DependentUpon>ItemPartial.xaml</DependentUpon>
+    <Compile Include="Views\Items\Partial.xaml.cs">
+      <DependentUpon>Partial.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -158,35 +155,31 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\GroupsPage.xaml">
+    <Page Include="Views\Space.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Groups\DetailsEditPage.xaml">
+    <Page Include="Views\Groups\EditDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Groups\GroupPartial.xaml">
+    <Page Include="Views\Groups\Partial.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Groups\ItemsEditPage.xaml">
+    <Page Include="Views\Groups\View.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ItemsPage.xaml">
+    <Page Include="Views\Items\EditDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Items\CreateEditPage.xaml">
+    <Page Include="Views\Items\View.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Items\DetailsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Items\ItemPartial.xaml">
+    <Page Include="Views\Items\Partial.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

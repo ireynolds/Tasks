@@ -92,7 +92,7 @@ namespace Tasks.Views
 
         private void Groups(object sender, EventArgs e)
         {
-            NavigationService.OpenGroups();
+            NavigationService.OpenSpace();
         }
 
         private void Delete(object sender, EventArgs e)
@@ -118,7 +118,7 @@ namespace Tasks.Views
         private void LongListMultiSelectorItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             var item = (sender as LongListMultiSelectorItem).DataContext as Item;
-            NavigationService.OpenItemDetails(item.Id);
+            NavigationService.OpenItem(item.Id);
         }
 
         private void MakeFixtures(object sender, EventArgs e)
