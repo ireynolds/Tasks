@@ -13,16 +13,16 @@ namespace Tasks
             get { return App.Database.Items; }
         }
 
-        public static Item Create(string Title = "", string Description = "")
+        public static Item Create(Group Source, string Title = "", string Description = "")
         {
-            var item = Item.New(Title, Description);
+            var item = Item.New(Source, Title, Description);
             item.Save();
             return item;
         }
 
-        public static Item New(string Title = "", string Description = "")
+        public static Item New(Group Source, string Title = "", string Description = "")
         {
-            return new Item() { Title = Title, Description = Description };
+            return new Item() { Source = Source, Title = Title, Description = Description };
         }
 
         public static Item FindWithId(int Id)

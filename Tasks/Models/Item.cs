@@ -17,7 +17,10 @@ namespace Tasks
         public string _title;
         
         [Column]
-        public string _description;        
+        public string _description;
+
+        [Column]
+        public int _sourceId;
 
         public Item() { }
     }

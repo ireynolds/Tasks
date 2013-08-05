@@ -49,33 +49,16 @@ namespace Tasks // Database
             }
         }
 
-        public static Group Create(string Title = "", string Description = "", ICollection<Item> Items = null)
+        public static Group Create(string Title = "", string Description = "")
         {
             var group = Group.New(Title, Description);
             group.Save();
-
-            if (Items != null)
-            {
-                foreach (var item in Items)
-                {
-                    group.AddItem(item);
-                }
-            }
-
             return group;
         }
 
         public static Group New(string Title = "", string Description = "")
         {
             return new Group() { Title = Title, Description = Description };
-        }
-
-        public static void MergeIntoInbox(Group Group)
-        {
-            foreach (var item in Group.Items)
-            {
-                Inbox.AddItem(item.Clone());
-            }
         }
 
         public static Group FindWithId(int Id)
@@ -94,6 +77,14 @@ namespace Tasks // Database
             return (from grp in All
                     where grp._id == Id
                     select grp).FirstOrDefault();
+        }
+
+        public static void MergeIntoInbox(Group group)
+        {
+            foreach (var item in group.Items)
+            {
+                Group.Inbox.MergeIntoThis(item);
+            }
         }
     }
 }

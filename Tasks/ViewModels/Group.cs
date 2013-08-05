@@ -66,6 +66,20 @@ namespace Tasks // ViewModels
             }
         }
 
+        public IEnumerable<IGrouping<Group, Item>> _constituents;
+        public IEnumerable<IGrouping<Group, Item>> Constituents
+        {
+            get
+            {
+                if (_constituents == null)
+                {
+                    _constituents = Items.GroupBy<Item, Group>((item) => item.Source);
+                }
+
+                return _constituents;
+            }
+        }
+
         private ObservableCollection<Item> _items;
         public ObservableCollection<Item> Items
         {
@@ -118,7 +132,7 @@ namespace Tasks // ViewModels
         {
             if (this.Exists())
             {
-                foreach (Item item in Items)
+                foreach (var item in Items)
                 {
                     item.Delete();
                 }
@@ -134,13 +148,22 @@ namespace Tasks // ViewModels
             App.Database.SubmitChanges();
         }
 
-        public void AddItem(Item Item)
+        public void CreateItem(string Title = "", string Description = "")
         {
             if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
 
+            var item = Item.New(this, Title, Description);
+            this.MergeIntoThis(item);
+        }
+
+        public void MergeIntoThis(Item Item)
+        {
+            if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
+
+            Item = Item.Clone();
             var entry = new GroupItemJoinTable() { _groupId = Id, _itemId = Item.Id };
             Items.Add(Item);
-            
+
             App.Database.GroupItemJoins.InsertOnSubmit(entry);
             App.Database.SubmitChanges();
         }

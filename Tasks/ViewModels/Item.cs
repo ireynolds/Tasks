@@ -9,10 +9,10 @@ namespace Tasks
 {
     public partial class Item : BindableBase
     {
-        public string Description
+        public int Id
         {
-            get { return _description; }
-            set { SetProperty(ref _description, value); }
+            get { return _id; }
+            set { SetProperty(ref _id, value); }
         }
 
         public string Title
@@ -21,10 +21,28 @@ namespace Tasks
             set { SetProperty(ref _title, value); }
         }
 
-        public int Id
+        public string Description
         {
-            get { return _id; }
-            set { SetProperty(ref _id, value); }
+            get { return _description; }
+            set { SetProperty(ref _description, value); }
+        }
+
+        private Group _source;
+        public Group Source
+        {
+            get 
+            {
+                if (_source == null)
+                {
+                    _source = Group.FindWithId(_sourceId);
+                }
+                return _source;
+            }
+            private set  
+            {
+                _sourceId = value.Id;
+                _source = value;
+            }
         }
 
         public void Reload()
@@ -63,7 +81,7 @@ namespace Tasks
 
         public Item Clone()
         {
-            return Item.Create(Title, Description);
+            return Item.Create(Source, Title, Description);
         }
 
         private void Insert()

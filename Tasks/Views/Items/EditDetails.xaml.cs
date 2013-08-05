@@ -61,10 +61,10 @@ namespace Tasks.Views.Items
             Mode = (Mode)Int32.Parse(NavigationContext.QueryString["mode"]);
             if (Mode == Mode.Create)
             {
-                Item = Item.New();
-
                 var parentId = Int32.Parse(NavigationContext.QueryString["groupId"]);
                 ParentGroup = Group.FindWithId(parentId);
+
+                Item = Item.New(ParentGroup);
             }
             else
             {
@@ -93,7 +93,7 @@ namespace Tasks.Views.Items
             
             if (Mode == Mode.Create)
             {
-                ParentGroup.AddItem(Item);
+                ParentGroup.MergeIntoThis(Item);
             }
 
             NavigationService.TryGoBack();

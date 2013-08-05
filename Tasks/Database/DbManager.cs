@@ -35,32 +35,22 @@ namespace Tasks.Database
         {
             App.Database.Clear();
 
-            var inboxItems = new List<Item>() 
-            {
-                Item.Create("Inbox.1", "Description1"),
-                Item.Create("Inbox.2", "Description2"),
-                Item.Create("Inbox.3", "Description3"),
-                Item.Create("Inbox.4", "Description4")
-            };
-            foreach (var item in inboxItems) Group.Inbox.AddItem(item);
+            Group.Inbox.CreateItem("Inbox.1", "Description1");
+            Group.Inbox.CreateItem("Inbox.2", "Description2");
+            Group.Inbox.CreateItem("Inbox.3", "Description3");
+            Group.Inbox.CreateItem("Inbox.4", "Description4");
 
-            var group1Items = new List<Item>()
-            {
-                Item.Create("Group1.1", "Description1"),
-                Item.Create("Group1.2", "Description2"),
-                Item.Create("Group1.3", "Description3"),
-                Item.Create("Group1.4", "Description4"),
-                Item.Create("Group1.5", "Description4")
-            };
-            var group1 = Group.Create("Group1", "This is a brief description of the first group", group1Items);
+            var group1 = Group.Create("Group1", "This is a brief description of the first group");
+            group1.CreateItem("Group1.1", "Description1");
+            group1.CreateItem("Group1.2", "Description2");
+            group1.CreateItem("Group1.3", "Description3");
+            group1.CreateItem("Group1.4", "Description4");
+            group1.CreateItem("Group1.5", "Description4");
 
-            var group2Items = new List<Item>()
-            {
-                Item.Create("Group2.1", "Description1"),
-                Item.Create("Group2.2", "Description2"),
-                Item.Create("Group2.3", "Description3")
-            };
-            var group2 = Group.Create("Group2", "This is a brief description of the second group", group2Items);
+            var group2 = Group.Create("Group2", "This is a brief description of the second group");
+            group2.CreateItem("Group2.1", "Description1");
+            group2.CreateItem("Group2.2", "Description2");
+            group2.CreateItem("Group2.3", "Description3");            
         }
 
         public void Clear()
