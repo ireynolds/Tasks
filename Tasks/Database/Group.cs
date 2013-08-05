@@ -51,14 +51,8 @@ namespace Tasks // Database
 
         public static Group Create(string Title = "", string Description = "", ICollection<Item> Items = null)
         {
-            var group = Group.New(Title, Description, Items);
+            var group = Group.New(Title, Description);
             group.Save();
-            return group;
-        }
-
-        public static Group New(string Title = "", string Description = "", ICollection<Item> Items = null)
-        {
-            var group = new Group() { Title = Title, Description = Description };
 
             if (Items != null)
             {
@@ -69,6 +63,11 @@ namespace Tasks // Database
             }
 
             return group;
+        }
+
+        public static Group New(string Title = "", string Description = "")
+        {
+            return new Group() { Title = Title, Description = Description };
         }
 
         public static void MergeIntoInbox(Group Group)
