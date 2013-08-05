@@ -40,13 +40,16 @@ namespace Tasks.Common
             ContentBox.GotFocus += ContentBox_GotFocus;
             ContentBox.LostFocus += ContentBox_LostFocus;
 
+            // HACK:: The TwoWay binding between ContentBox.Text and Value isn't working for some
+            // reasons.
+            ContentBox.TextChanged += (s, e) => Value = ContentBox.Text;
+
             OriginalForegroundBrush = ContentBox.Foreground;
         }
 
         private void WatermarkedTextBox_Loaded(object sender, RoutedEventArgs e)
         {
             this.Loaded -= WatermarkedTextBox_Loaded;
-
             ContentBox_LostFocus(null, null);
         }
 

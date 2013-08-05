@@ -99,7 +99,7 @@ namespace Tasks // ViewModels
 
         public bool Exists()
         {
-            return this.Equals(Group.FindWithId(Id));
+            return this.Equals(Group.FindWithIdOrDefault(Id));
         }
 
         public void Save()

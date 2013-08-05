@@ -15,6 +15,13 @@ namespace Tasks.Views
 {
     public partial class ItemsPage : PhoneApplicationPage
     {
+        private Mode _mode;
+        public Mode Mode
+        {
+            get { return _mode; }
+            set { _mode = value; }
+        }
+
         private Group _group;
         private Group Group
         {
@@ -28,6 +35,8 @@ namespace Tasks.Views
 
                 _group = value;
                 this.DataContext = value;
+
+                DetailsBlock.Visibility = Group.Inbox.Equals(value) ? Visibility.Collapsed : Visibility.Visible;
             }
         }
 
@@ -50,7 +59,20 @@ namespace Tasks.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            Group = Group.Inbox;
+
+            string mode;
+            if (NavigationContext.QueryString.TryGetValue("mode", out mode))
+            {
+                Mode = (Mode)Int32.Parse(mode);
+
+                var id = Int32.Parse(NavigationContext.QueryString["id"]);
+                Group = Group.FindWithId(id);
+            }
+            else
+            {
+                Mode = Mode.Inbox;
+                Group = Group.Inbox;
+            }
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
@@ -65,7 +87,7 @@ namespace Tasks.Views
 
         private void New(object sender, EventArgs e)
         {
-            NavigationService.OpenCreateItem();
+            NavigationService.OpenCreateItem(Group.Id);
         }
 
         private void Groups(object sender, EventArgs e)
@@ -102,7 +124,7 @@ namespace Tasks.Views
         private void MakeFixtures(object sender, EventArgs e)
         {
             App.Database.MakeFixtures();
-            this.DataContext = Group.Inbox;
+            Group = Group.Inbox;
         }
     }
 }

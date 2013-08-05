@@ -9,6 +9,8 @@ namespace Tasks.Common
     public enum Mode
     {
         Create,
-        Edit
+        Edit,
+        Inbox,
+        View
     }
 }

@@ -81,6 +81,17 @@ namespace Tasks // Database
 
         public static Group FindWithId(int Id)
         {
+            var group = FindWithIdOrDefault(Id);
+            if (group == null)
+            {
+                throw new ArgumentException();
+            }
+
+            return group;
+        }
+
+        public static Group FindWithIdOrDefault(int Id)
+        {
             return (from grp in All
                     where grp._id == Id
                     select grp).FirstOrDefault();

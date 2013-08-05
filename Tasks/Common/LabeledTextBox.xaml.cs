@@ -43,6 +43,10 @@ namespace Tasks.Common
         {
             InitializeComponent();
             this.LayoutRoot.DataContext = this;
+            
+            // HACK:: The TwoWay binding between ContentBox.Text and Value isn't working for some
+            // reasons.
+            ContentBox.TextChanged += (s, e) => Value = ContentBox.Text;
         }
     }
 }

@@ -41,14 +41,14 @@ namespace Tasks.Common
             Nav.Navigate(ItemsPagePath);
         }
 
-        public static void OpenItems(this NavigationService Nav)
+        public static void OpenItems(this NavigationService Nav, int Id)
         {
-            Nav.Navigate(ItemsPagePath);
+            Nav.Navigate(String.Format("{0}?id={1}&mode={2}", ItemsPagePath, Id, (int)Mode.View));
         }
 
-        public static void OpenCreateItem(this NavigationService Nav)
+        public static void OpenCreateItem(this NavigationService Nav, int groupId)
         {
-            Nav.Navigate(String.Format("{0}?mode={1}", ItemCreateEditPagePath, (int)Mode.Create));
+            Nav.Navigate(String.Format("{0}?mode={1}&groupId={2}", ItemCreateEditPagePath, (int)Mode.Create, groupId));
         }
 
         public static void OpenItemDetails(this NavigationService Nav, int Id)
@@ -74,11 +74,6 @@ namespace Tasks.Common
         public static void OpenCreateGroup(this NavigationService Nav)
         {
             Nav.Navigate(String.Format("{0}?mode={1}", GroupDetailsEditPagePath, (int)Mode.Create));
-        }
-
-        public static void OpenEditGroupItems(this NavigationService Nav, int Id)
-        {
-            Nav.Navigate(String.Format("{0}?id={1}", GroupItemsEditPagePath, Id));
         }
     }
 }

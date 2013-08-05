@@ -13,6 +13,13 @@ namespace Tasks.Views.Items
 {
     public partial class CreateEditPage : PhoneApplicationPage
     {
+        private Group _parentGroup;
+        public Group ParentGroup
+        {
+            get { return _parentGroup; }
+            set { _parentGroup = value; }
+        }
+
         private Item _item;
         private Item Item
         {
@@ -55,6 +62,9 @@ namespace Tasks.Views.Items
             if (Mode == Mode.Create)
             {
                 Item = Item.New();
+
+                var parentId = Int32.Parse(NavigationContext.QueryString["groupId"]);
+                ParentGroup = Group.FindWithId(parentId);
             }
             else
             {
@@ -80,6 +90,12 @@ namespace Tasks.Views.Items
         {
             ApplicationBar.Disable();
             Item.Save();
+            
+            if (Mode == Mode.Create)
+            {
+                ParentGroup.AddItem(Item);
+            }
+
             NavigationService.TryGoBack();
         }
     }

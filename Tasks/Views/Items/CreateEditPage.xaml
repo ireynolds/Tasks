@@ -29,8 +29,9 @@
 
         <!--ContentPanel - place additional content here-->
         <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <common:WatermarkedTextBox Watermark="Title" Value="{Binding Path=Title, Mode=TwoWay}" />
-            <common:LabeledTextBox Value="{Binding Path=Description, Mode=TwoWay}"
+            <common:WatermarkedTextBox Name="TitleBox" Watermark="Title" Value="{Binding Path=Title, Mode=TwoWay}" />
+            <common:LabeledTextBox Name="DescriptionBox"
+                                   Value="{Binding Path=Description, Mode=TwoWay}"
                                    Label="Description"
                                    AcceptsReturn="True"/>
         </StackPanel>
