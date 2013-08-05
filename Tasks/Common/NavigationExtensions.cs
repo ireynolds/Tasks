@@ -62,9 +62,9 @@ namespace Tasks.Common
             Nav.Navigate(String.Format("{0}?id={1}&mode={2}", EditItemPath, Id, (int)Mode.Edit));
         }
 
-        public static void OpenSpace(this NavigationService Nav)
+        public static void OpenSpace(this NavigationService Nav, int TargetId)
         {
-            Nav.Navigate(ViewSpacePath);
+            Nav.Navigate(String.Format("{0}?targetId={1}", ViewSpacePath, TargetId));
         }
 
         public static void OpenEditGroup(this NavigationService Nav, int Id)

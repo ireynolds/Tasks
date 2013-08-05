@@ -66,6 +66,13 @@ namespace Tasks.Views
             }
         }
 
+        private Group _group;
+        public Group Group
+        {
+            get { return _group; }
+            set { _group = value; }
+        }
+
         public GroupsPage()
         {
             InitializeComponent();
@@ -75,7 +82,11 @@ namespace Tasks.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            
             Space = new Space();
+
+            var targetId = Int32.Parse(NavigationContext.QueryString["targetId"]);
+            Group = Group.FindWithId(targetId);
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
@@ -107,7 +118,7 @@ namespace Tasks.Views
         {
             foreach (Group group in GroupsList.SelectedItems)
             {
-                Group.MergeIntoInbox(group);
+                Group.MergeIntoThis(group);
             }
             NavigationService.TryGoBack();
         }

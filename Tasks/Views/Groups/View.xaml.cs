@@ -92,7 +92,7 @@ namespace Tasks.Views
 
         private void Groups(object sender, EventArgs e)
         {
-            NavigationService.OpenSpace();
+            NavigationService.OpenSpace(Group.Id);
         }
 
         private void DeleteItems(object sender, EventArgs e)

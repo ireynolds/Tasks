@@ -168,6 +168,14 @@ namespace Tasks // ViewModels
             App.Database.SubmitChanges();
         }
 
+        public void MergeIntoThis(Group group)
+        {
+            foreach (var item in group.Items)
+            {
+                this.MergeIntoThis(item);
+            }
+        }
+
         public void DeleteItem(Item Item)
         {
             if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");

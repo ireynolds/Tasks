@@ -78,13 +78,5 @@ namespace Tasks // Database
                     where grp._id == Id
                     select grp).FirstOrDefault();
         }
-
-        public static void MergeIntoInbox(Group group)
-        {
-            foreach (var item in group.Items)
-            {
-                Group.Inbox.MergeIntoThis(item);
-            }
-        }
     }
 }
