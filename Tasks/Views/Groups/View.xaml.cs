@@ -36,8 +36,6 @@ namespace Tasks.Views
 
                 _group = value;
                 this.DataContext = value;
-
-                //DetailsBlock.Visibility = Group.Inbox.Equals(value) ? Visibility.Collapsed : Visibility.Visible;
             }
         }
 

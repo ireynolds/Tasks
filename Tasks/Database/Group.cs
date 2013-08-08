@@ -49,16 +49,16 @@ namespace Tasks // Database
             }
         }
 
-        public static Group Create(string Title = "", string Description = "")
+        public static Group Create(string Title = "")
         {
-            var group = Group.New(Title, Description);
+            var group = Group.New(Title);
             group.Save();
             return group;
         }
 
-        public static Group New(string Title = "", string Description = "")
+        public static Group New(string Title = "")
         {
-            return new Group() { Title = Title, Description = Description };
+            return new Group() { Title = Title };
         }
 
         public static Group FindWithId(int Id)

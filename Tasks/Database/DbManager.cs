@@ -40,14 +40,14 @@ namespace Tasks.Database
             Group.Inbox.CreateItem("Inbox.3", "Description3");
             Group.Inbox.CreateItem("Inbox.4", "Description4");
 
-            var group1 = Group.Create("Group1", "This is a brief description of the first group");
+            var group1 = Group.Create("Group1");
             group1.CreateItem("Group1.1", "Description1");
             group1.CreateItem("Group1.2", "Description2");
             group1.CreateItem("Group1.3", "Description3");
             group1.CreateItem("Group1.4", "Description4");
             group1.CreateItem("Group1.5", "Description4");
 
-            var group2 = Group.Create("Group2", "This is a brief description of the second group");
+            var group2 = Group.Create("Group2");
             group2.CreateItem("Group2.1", "Description1");
             group2.CreateItem("Group2.2", "Description2");
             group2.CreateItem("Group2.3", "Description3");            

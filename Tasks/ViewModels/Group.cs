@@ -28,12 +28,6 @@ namespace Tasks // ViewModels
             get { return _title.ToUpper(); }
         }
 
-        public string Description
-        {
-            get { return _description; }
-            set { SetProperty(ref _description, value); }
-        }
-
         public bool IsDeleted
         {
             get { return _isDeleted; }
@@ -199,6 +193,7 @@ namespace Tasks // ViewModels
             if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
 
             Item = Item.NewClone();
+            App.Database.Items.InsertOnSubmit(Item);
             var entry = new GroupItemJoinTable() { _groupId = Id, _itemId = Item.Id };
             Items.Add(Item);
 
