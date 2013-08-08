@@ -10,6 +10,7 @@ using Microsoft.Phone.Shell;
 using System.Collections.ObjectModel;
 using Tasks.Views.Items;
 using Tasks.Common;
+using Tasks.Views.Groups;
 
 namespace Tasks.Views
 {
@@ -126,7 +127,7 @@ namespace Tasks.Views
 
         private void Group_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            NavigationService.OpenGroup(((sender as GroupPartial).DataContext as Group).Id);
         }
 
         private void MakeFixtures(object sender, EventArgs e)
