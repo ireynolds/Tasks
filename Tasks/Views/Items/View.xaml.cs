@@ -49,7 +49,7 @@ namespace Tasks.Views.Items
         {
             Utils.Confirm("Delete item?", "This item will be deleted from your phone.", () =>
             {
-                Item.Delete();
+                Item.DeleteAndSave();
                 NavigationService.TryGoBack();
             }, "delete", "cancel");
         }

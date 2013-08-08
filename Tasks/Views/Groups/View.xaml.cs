@@ -102,7 +102,7 @@ namespace Tasks.Views
             {
                 foreach (Item item in ItemsList.SelectedItems.ToList<Item>())
                 {
-                    Group.DeleteItem(item);
+                    Group.DeleteItemAndSubmit(item);
                 }
             }, "delete", "cancel");
         }
@@ -140,7 +140,7 @@ namespace Tasks.Views
         {
             Utils.Confirm("Delete group?", "All the items in this group will be deleted from your phone.", () =>
             {
-                Group.Delete();
+                Group.DeleteAndSubmit();
                 NavigationService.GoBack();
             }, "delete", "cancel");
         }

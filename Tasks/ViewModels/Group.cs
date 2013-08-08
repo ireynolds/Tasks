@@ -133,6 +133,9 @@ namespace Tasks // ViewModels
                         where entry._groupId == Id
                         select Item.FindWithId(entry._itemId);
 
+            if (_items == null)
+                _items = new ObservableCollection<Item>();
+
             _items.Clear();
             foreach (var item in query) _items.Add(item);
         }
@@ -142,6 +145,9 @@ namespace Tasks // ViewModels
             var query = (from item in Items
                          where item._sourceId != Id
                          select Group.FindWithId(item._sourceId)).Distinct();
+
+            if (_groups == null)
+                _groups = new ObservableCollection<Group>();
 
             _groups.Clear();
             foreach (var group in query) _groups.Add(group);
@@ -156,32 +162,28 @@ namespace Tasks // ViewModels
         {
             if (!this.Exists())
             {
-                this.Insert();
+                App.Database.Groups.InsertOnSubmit(this);
             }
-            else
-            {
-                App.Database.SubmitChanges();
-            }
+            App.Database.SubmitChanges();
+            OnPropertyChanged();
         }
 
         public void Delete()
         {
             if (this.Exists())
             {
-                foreach (Item item in new List<Item>(Items))
+                foreach (var item in new List<Item>(Items))
                 {
                     this.DeleteItem(item);
                 }
-
                 this.IsDeleted = true;
-                this.Save();
             }
         }
 
-        private void Insert()
+        public void DeleteAndSubmit()
         {
-            App.Database.Groups.InsertOnSubmit(this);
-            App.Database.SubmitChanges();
+            this.Delete();
+            this.Save();
         }
 
         public void CreateItem(string Title = "", string Description = "")
@@ -189,19 +191,24 @@ namespace Tasks // ViewModels
             if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
 
             var item = Item.New(this, Title, Description);
-            this.MergeIntoThis(item);
+            this.MergeIntoThisAndSubmit(item);
         }
 
         public void MergeIntoThis(Item Item)
         {
             if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
 
-            Item = Item.CreateClone();
+            Item = Item.NewClone();
             var entry = new GroupItemJoinTable() { _groupId = Id, _itemId = Item.Id };
             Items.Add(Item);
 
             App.Database.GroupItemJoins.InsertOnSubmit(entry);
-            App.Database.SubmitChanges();
+        }
+
+        public void MergeIntoThisAndSubmit(Item Item)
+        {
+            this.MergeIntoThis(Item);
+            this.Save();
         }
 
         public void MergeIntoThis(Group Group)
@@ -213,22 +220,36 @@ namespace Tasks // ViewModels
                 clone.Source = Group;
                 this.MergeIntoThis(clone);
             }
+            OnPropertyChanged();
+        }
+
+        public void MergeIntoThisAndSubmit(Group Group)
+        {
+            this.MergeIntoThis(Group);
+            this.Save();
         }
 
         public void DeleteItem(Item Item)
         {
             if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
 
-            var entry = (from tuple in App.Database.GroupItemJoins
-                        where tuple._groupId == Id && tuple._itemId == Item.Id
-                        select tuple).First();
-            Items.Remove(Item.FindWithId(entry._itemId));
-            
-            App.Database.GroupItemJoins.DeleteOnSubmit(entry);
-            App.Database.SubmitChanges();
+            var entries = from tuple in App.Database.GroupItemJoins
+                          where tuple._groupId == Id && tuple._itemId == Item.Id
+                          select tuple;
+
+            foreach (var entry in entries)
+            {
+                this.Items.Remove(Item.FindWithId(entry._itemId));
+                App.Database.GroupItemJoins.DeleteOnSubmit(entry);
+            }
 
             Item.Delete();
-            ReloadGroups();
+        }
+
+        public void DeleteItemAndSubmit(Item Item)
+        {
+            this.DeleteItem(Item);
+            this.Save();
         }
     }
 }

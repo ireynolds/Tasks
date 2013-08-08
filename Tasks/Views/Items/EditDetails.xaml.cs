@@ -93,7 +93,7 @@ namespace Tasks.Views.Items
             
             if (Mode == Mode.Create)
             {
-                ParentGroup.MergeIntoThis(Item);
+                ParentGroup.MergeIntoThisAndSubmit(Item);
             }
 
             NavigationService.TryGoBack();

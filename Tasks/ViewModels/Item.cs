@@ -70,12 +70,15 @@ namespace Tasks
         {
             if (!this.Exists())
             {
-                this.Insert();
+                App.Database.Items.InsertOnSubmit(this);
             }
-            else
-            {
-                App.Database.SubmitChanges();
-            }
+            App.Database.SubmitChanges();
+        }
+
+        public void DeleteAndSave()
+        {
+            this.Delete();
+            this.Save();
         }
 
         public void Delete()
@@ -83,7 +86,6 @@ namespace Tasks
             if (this.Exists())
             {
                 App.Database.Items.DeleteOnSubmit(this);
-                App.Database.SubmitChanges();
             }
         }
 
@@ -95,12 +97,6 @@ namespace Tasks
         public Item NewClone()
         {
             return Item.New(Source, Title, Description);
-        }
-
-        private void Insert()
-        {
-            App.Database.Items.InsertOnSubmit(this);
-            App.Database.SubmitChanges();
         }
     }
 }
