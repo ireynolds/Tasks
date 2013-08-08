@@ -57,39 +57,6 @@
                                                SelectionChanged="GroupsList_SelectionChanged"/>
             </phone:PivotItem>
         </phone:Pivot>
-
-        <!--
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="TASKS" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Name="PageTitle" Text="{Binding Title}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
-
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            
-            <TextBlock Name="DetailsBlock"
-                       Grid.Row="0"
-                       TextWrapping="Wrap"
-                       Style="{StaticResource PhoneTextSubtleStyle}" />
-            
-            <toolkit:LongListMultiSelector Name="ItemsList"
-                                           Grid.Row="1"
-                                           ItemsSource="{Binding Items}"
-                                           IsGroupingEnabled="False"
-                                           ItemTemplate="{StaticResource ItemTemplate}"
-                                           Margin="-12,0,0,0"
-                                           SelectionChanged="ItemsList_SelectionChanged">
-            </toolkit:LongListMultiSelector>
-        </Grid>
-        -->
     </Grid>
 
 </phone:PhoneApplicationPage>
