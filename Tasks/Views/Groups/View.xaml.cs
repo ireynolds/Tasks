@@ -41,7 +41,17 @@ namespace Tasks.Views
 
         private IApplicationBar DefaultAppBar 
         { 
-            get { return (IApplicationBar)this.Resources["DefaultAppBar"]; } 
+            get 
+            {
+                if (Group.Id == Group.Inbox.Id)
+                {
+                    return (IApplicationBar)this.Resources["InboxAppBar"];
+                }
+                else
+                {
+                    return (IApplicationBar)this.Resources["NonInboxAppBar"];
+                }
+            } 
         }
         
         private IApplicationBar SelectionAppBar 
@@ -52,7 +62,6 @@ namespace Tasks.Views
         public ItemsPage()
         {
             InitializeComponent();
-            ApplicationBar = DefaultAppBar;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -72,6 +81,8 @@ namespace Tasks.Views
                 Mode = Mode.Inbox;
                 Group = Group.Inbox;
             }
+
+            ApplicationBar = DefaultAppBar;
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
