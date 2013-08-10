@@ -83,6 +83,15 @@ namespace Tasks.Views
             }
 
             ApplicationBar = DefaultAppBar;
+
+            if (Group.Id != Group.Inbox.Id || Group.Groups.Count == 0)
+            {
+                MainPivot.Items.Remove(GroupsPivotItem);
+            }
+            else if (!MainPivot.Items.Contains(GroupsPivotItem))
+            {
+                MainPivot.Items.Add(GroupsPivotItem);
+            }
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)

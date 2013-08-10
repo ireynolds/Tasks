@@ -44,8 +44,8 @@
     
     <Grid x:Name="LayoutRoot" Background="Transparent">
 
-        <phone:Pivot Title="{Binding UppercaseTitle}">
-            <phone:PivotItem Header="items">
+        <phone:Pivot Title="{Binding UppercaseTitle}" Name="MainPivot">
+            <phone:PivotItem Header="items" Name="ItemsPivotItem">
                 <toolkit:LongListMultiSelector Name="ItemsList"
                                                ItemsSource="{Binding Items}"
                                                IsGroupingEnabled="False"
@@ -54,7 +54,7 @@
                                                SelectionChanged="ItemsList_SelectionChanged"/>
             </phone:PivotItem>
 
-            <phone:PivotItem Header="groups">
+            <phone:PivotItem Header="groups" Name="GroupsPivotItem">
                 <toolkit:LongListMultiSelector Name="GroupsList"
                                                ItemsSource="{Binding Groups}"
                                                IsGroupingEnabled="False"
