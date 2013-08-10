@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tasks.Common;
+using Tasks.ViewModels;
 
 namespace Tasks.Database
 {
@@ -33,7 +34,9 @@ namespace Tasks.Database
 
         public void MakeFixtures()
         {
-            App.Database.Clear();
+            App.Database.ClearAllStores();
+
+            Filter.EnsureExisting();
 
             Group.Inbox.CreateItem("Inbox.1", "Description1");
             Group.Inbox.CreateItem("Inbox.2", "Description2");
@@ -51,9 +54,10 @@ namespace Tasks.Database
             group2.CreateItem("Group2.1", "Description1");
             group2.CreateItem("Group2.2", "Description2");
             group2.CreateItem("Group2.3", "Description3");
+
         }
 
-        public void Clear()
+        public void ClearAllStores()
         {
             IsolatedStorageSettings.ApplicationSettings.Clear();
             IsolatedStorageSettings.ApplicationSettings.Save();

@@ -23,17 +23,28 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="SELECT FILTERS" Style="{StaticResource PhoneTextNormalStyle}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <TextBlock Style="{StaticResource PhoneTextTitle2Style}" Text="Status"/>
+
+            <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsShowingDone, Mode=TwoWay}" />
+                <TextBlock Text="Done" Margin="15,12,0,0" Style="{StaticResource PhoneTextTitle2Style}" />
+            </StackPanel>
+
             <StackPanel Orientation="Horizontal">
                 <CheckBox IsChecked="{Binding IsShowingActive, Mode=TwoWay}" />
-                <TextBlock Text="Show Active" Margin="30,0,0,0" />
+                <TextBlock Text="Active" Margin="15,12,0,0" Style="{StaticResource PhoneTextTitle2Style}" />
             </StackPanel>
-        </Grid>
+
+            <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsShowingOnHold, Mode=TwoWay}" />
+                <TextBlock Text="On Hold" Margin="15,12,0,0" Style="{StaticResource PhoneTextTitle2Style}" />
+            </StackPanel>
+        </StackPanel>
     </Grid>
 
 </phone:PhoneApplicationPage>

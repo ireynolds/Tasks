@@ -143,8 +143,10 @@ namespace Tasks // ViewModels
         {
             get
             {
-                if (_items == null)
+                if (_filteredItems == null)
                 {
+                    var all = Items;
+
                     var statuses = new Filter().ShownStatusesAsInt;
                     var elements = from entry in Items
                                    where statuses.Contains(entry._status)
@@ -152,7 +154,7 @@ namespace Tasks // ViewModels
                     ReloadCollection(ref _filteredItems, elements);
                 }
 
-                return _items;
+                return _filteredItems;
             }
         }
 

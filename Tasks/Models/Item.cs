@@ -25,6 +25,9 @@ namespace Tasks
         [Column]
         public int _status;
 
-        public Item() { }
+        public Item() 
+        {
+            _status = (int)Tasks.Common.Status.Active;
+        }
     }
 }

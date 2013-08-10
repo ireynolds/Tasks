@@ -63,6 +63,7 @@ namespace Tasks.ViewModels
                 IsolatedStorageSettings.ApplicationSettings["IsShowingDone"] = false;
                 IsolatedStorageSettings.ApplicationSettings["IsShowingOnHold"] = false;
             }
+            IsolatedStorageSettings.ApplicationSettings.Save();
         }
 
         public Filter()

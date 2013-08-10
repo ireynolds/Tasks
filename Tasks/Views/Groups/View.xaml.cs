@@ -83,6 +83,7 @@ namespace Tasks.Views
             }
 
             ApplicationBar = DefaultAppBar;
+            Group.Reload();
 
             if (Group.Id != Group.Inbox.Id || Group.Groups.Count == 0)
             {
