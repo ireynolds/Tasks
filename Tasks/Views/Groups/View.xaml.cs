@@ -11,11 +11,25 @@ using System.Collections.ObjectModel;
 using Tasks.Views.Items;
 using Tasks.Common;
 using Tasks.Views.Groups;
+using Tasks.ViewModels;
+using System.Diagnostics;
 
 namespace Tasks.Views
 {
     public partial class ItemsPage : PhoneApplicationPage
     {
+        private Filter _filter;
+        public Filter Filter
+        {
+            get { return _filter; }
+            set 
+            { 
+                _filter = value;
+                FiltersBlock.DataContext = value;
+            }
+        }
+        
+
         private Mode _mode;
         public Mode Mode
         {
@@ -43,7 +57,7 @@ namespace Tasks.Views
         { 
             get 
             {
-                if (Group.Id == Group.Inbox.Id)
+                if (Mode == Mode.Inbox)
                 {
                     return (IApplicationBar)this.Resources["InboxAppBar"];
                 }
@@ -62,37 +76,57 @@ namespace Tasks.Views
         public ItemsPage()
         {
             InitializeComponent();
+
+            Filter = new Filter();
+
+            if (!Debugger.IsAttached)
+            {
+                // Remove the "make fixtures" menuitem
+                (this.Resources["InboxAppBar"] as IApplicationBar).MenuItems.RemoveAt(0);
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            string mode;
-            if (NavigationContext.QueryString.TryGetValue("mode", out mode))
+            // Parse parameters
+            if (Group == null)
             {
-                Mode = (Mode)Int32.Parse(mode);
+                string mode;
+                if (NavigationContext.QueryString.TryGetValue("mode", out mode))
+                {
+                    Mode = (Mode)Int32.Parse(mode);
 
-                var id = Int32.Parse(NavigationContext.QueryString["id"]);
-                Group = Group.FindById(id);
-            }
-            else
-            {
-                Mode = Mode.Inbox;
-                Group = Group.Inbox;
+                    var id = Int32.Parse(NavigationContext.QueryString["id"]);
+                    Group = Group.FindById(id);
+                }
+                else
+                {
+                    Mode = Mode.Inbox;
+                    Group = Group.Inbox;
+                }
             }
 
+            // Setup the application bar
             ApplicationBar = DefaultAppBar;
-            Group.Reload();
 
-            if (Group.Id != Group.Inbox.Id || Group.Groups.Count == 0)
+            // Adjust filters and pivot for inbox/non-inbox
+            Group.FiltersAreEnabled = Filter.AreFiltersEnabled = (Mode == Mode.Inbox);
+            if (Mode == Mode.Inbox)
+            {
+                if (Group.Groups.Count == 0)
+                    MainPivot.Items.Remove(GroupsPivotItem);
+                else
+                    MainPivot.Items.Add(GroupsPivotItem);
+            } 
+            else 
             {
                 MainPivot.Items.Remove(GroupsPivotItem);
             }
-            else if (!MainPivot.Items.Contains(GroupsPivotItem))
-            {
-                MainPivot.Items.Add(GroupsPivotItem);
-            }
+
+            Filter.Reload();
+            Group.Reload();
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
@@ -152,7 +186,9 @@ namespace Tasks.Views
         private void MakeFixtures(object sender, EventArgs e)
         {
             App.Database.MakeFixtures();
+            
             Group = Group.Inbox;
+            Mode = Mode.Inbox;
         }
 
         private void DeleteGroup(object sender, EventArgs e)
@@ -170,6 +206,11 @@ namespace Tasks.Views
         }
 
         private void Filters(object sender, EventArgs e)
+        {
+            NavigationService.OpenFilters();
+        }
+
+        private void FiltersBlock_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.OpenFilters();
         }

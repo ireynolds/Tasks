@@ -53,7 +53,7 @@ namespace Tasks // ViewModels
             {
                 StringBuilder sb = new StringBuilder();
 
-                IEnumerator<Item> iter = Items.GetEnumerator();
+                IEnumerator<Item> iter = UnfilteredItems.GetEnumerator();
                 if (iter.MoveNext())
                 {
                     sb.Append(iter.Current.Title);
@@ -80,7 +80,7 @@ namespace Tasks // ViewModels
         {
             get
             {
-                return String.Format("[{0} items]", Items.Count);
+                return String.Format("[{0} items]", UnfilteredItems.Count);
             }
         }
 
@@ -91,6 +91,16 @@ namespace Tasks // ViewModels
         /* ------------------------------------------------------------- */
         // Collections
 
+        public bool FiltersAreEnabled { get; set; }
+
+        public ObservableCollection<Item> Items
+        {
+            get
+            {
+                return (FiltersAreEnabled) ? FilteredItems : UnfilteredItems;
+            }
+        }
+
         public IEnumerable<IGrouping<Group, Item>> _constituents;
         public IEnumerable<IGrouping<Group, Item>> Constituents
         {
@@ -98,7 +108,7 @@ namespace Tasks // ViewModels
             {
                 if (_constituents == null)
                 {
-                    _constituents = Items.GroupBy<Item, Group>((item) => item.Source);
+                    _constituents = UnfilteredItems.GroupBy<Item, Group>((item) => item.Source);
                 }
 
                 return _constituents;
@@ -112,7 +122,7 @@ namespace Tasks // ViewModels
             {
                 if (_groups == null)
                 {
-                    var elements = (from item in Items
+                    var elements = (from item in UnfilteredItems
                                     where item._sourceId != Id
                                     select Group.FindById(item._sourceId)).Distinct();
                     ReloadCollection(ref _groups, elements);
@@ -121,20 +131,20 @@ namespace Tasks // ViewModels
             }
         }
 
-        private ObservableCollection<Item> _items;
-        public ObservableCollection<Item> Items
+        private ObservableCollection<Item> _unfilteredItems;
+        public ObservableCollection<Item> UnfilteredItems
         {
             get
             {
-                if (_items == null)
+                if (_unfilteredItems == null)
                 {
                     var elements = from entry in App.Database.GroupItemJoins
                                    where entry._groupId == Id
                                    select Item.FindById(entry._itemId);
-                    ReloadCollection(ref _items, elements);
+                    ReloadCollection(ref _unfilteredItems, elements);
                 }
 
-                return _items;
+                return _unfilteredItems;
             }
         }
 
@@ -145,11 +155,11 @@ namespace Tasks // ViewModels
             {
                 if (_filteredItems == null)
                 {
-                    var all = Items;
+                    var all = UnfilteredItems;
 
-                    var statuses = new Filter().ShownStatusesAsInt;
-                    var elements = from entry in Items
-                                   where statuses.Contains(entry._status)
+                    var statuses = new Filter().ShownStatuses;
+                    var elements = from entry in UnfilteredItems
+                                   where statuses.Contains((Status)entry._status)
                                    select entry;
                     ReloadCollection(ref _filteredItems, elements);
                 }
@@ -204,7 +214,7 @@ namespace Tasks // ViewModels
         {
             if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
 
-            Items.Remove(Item);
+            UnfilteredItems.Remove(Item);
             Item.Destroy();
 
             var groupItem = (from entry in GroupItems
@@ -233,7 +243,7 @@ namespace Tasks // ViewModels
         {
             if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
 
-            Items.Add(Item);
+            UnfilteredItems.Add(Item);
 
             var entry = new GroupItemJoinTable() { _groupId = Id, _itemId = Item.Id };
 
@@ -260,7 +270,7 @@ namespace Tasks // ViewModels
             Groups.Add(Group);
             
             var clones = new List<Item>();
-            foreach (var item in Group.Items)
+            foreach (var item in Group.UnfilteredItems)
             {
                 var clone = item.BuildClone();
 

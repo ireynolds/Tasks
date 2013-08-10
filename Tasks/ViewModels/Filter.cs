@@ -4,81 +4,63 @@ using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Tasks.Common;
 
-namespace Tasks.ViewModels
+namespace Tasks
 {
-    public class Filter : BindableBase
-    {
-        private bool _isShowingActive;
+    public partial class Filter : BindableBase
+    {        
         public bool IsShowingActive
         {
             get { return _isShowingActive; }
             set { SetProperty(ref _isShowingActive, value); }
         }
-
-        private bool _isShowingDone;
+        
         public bool IsShowingDone
         {
             get { return _isShowingDone; }
             set { SetProperty(ref _isShowingDone, value); }
         }
 
-        private bool _isShowingOnHold;
         public bool IsShowingOnHold
         {
             get { return _isShowingOnHold; }
             set { SetProperty(ref _isShowingOnHold, value); }
         }
 
-        public ISet<Status> ShownStatuses
-        {
-            get 
-            {
-                var set = new HashSet<Status>();
-                if (IsShowingActive) set.Add(Status.Active);
-                if (IsShowingDone)   set.Add(Status.Done);
-                if (IsShowingOnHold) set.Add(Status.OnHold);
-                return set;
-            }
+        public bool AreFiltersEnabled 
+        { 
+            get; 
+            set; 
         }
 
-        public ISet<int> ShownStatusesAsInt
+        public Visibility FiltersBlockVisibility
         {
             get
             {
-                var set = new HashSet<int>();
-                if (IsShowingActive) set.Add((int)Status.Active);
-                if (IsShowingDone)   set.Add((int)Status.Done);
-                if (IsShowingOnHold) set.Add((int)Status.OnHold);
-                return set;
+                return (AreFiltersEnabled) ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
-        public static void EnsureExisting()
+        public List<Status> ShownStatuses
         {
-            if (!IsolatedStorageSettings.ApplicationSettings.Contains("IsShowingActive"))
+            get 
             {
-                IsolatedStorageSettings.ApplicationSettings["IsShowingActive"] = true;
-                IsolatedStorageSettings.ApplicationSettings["IsShowingDone"] = false;
-                IsolatedStorageSettings.ApplicationSettings["IsShowingOnHold"] = false;
+                var lst = new List<Status>();
+                if (IsShowingDone) lst.Add(Status.Done);
+                if (IsShowingActive) lst.Add(Status.Active);
+                if (IsShowingOnHold) lst.Add(Status.OnHold);
+                return lst;
             }
-            IsolatedStorageSettings.ApplicationSettings.Save();
         }
 
-        public Filter()
+        public string ShownStatusesAsString
         {
-            IsShowingActive = (bool)IsolatedStorageSettings.ApplicationSettings["IsShowingActive"];
-            IsShowingDone = (bool)IsolatedStorageSettings.ApplicationSettings["IsShowingDone"];
-            IsShowingOnHold = (bool)IsolatedStorageSettings.ApplicationSettings["IsShowingOnHold"];
-        }
-
-        public void Save()
-        {
-            IsolatedStorageSettings.ApplicationSettings["IsShowingActive"] = IsShowingActive;
-            IsolatedStorageSettings.ApplicationSettings["IsShowingDone"] = IsShowingDone;
-            IsolatedStorageSettings.ApplicationSettings["IsShowingOnHold"] = IsShowingOnHold;
-            IsolatedStorageSettings.ApplicationSettings.Save();
+            get
+            {
+                return String.Format("({0})", string.Join(", ", ShownStatuses).ToUpper());
+            }
         }
     }
 }

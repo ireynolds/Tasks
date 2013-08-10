@@ -44,10 +44,23 @@
     
     <Grid x:Name="LayoutRoot" Background="Transparent">
 
-        <phone:Pivot Title="{Binding UppercaseTitle}" Name="MainPivot">
+        <phone:Pivot  Name="MainPivot">
+            <phone:Pivot.Title>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding UppercaseTitle}" />
+                    <TextBlock Name="FiltersBlock" 
+                               Text="{Binding ShownStatusesAsString}" 
+                               Tap="FiltersBlock_Tap" 
+                               Style="{StaticResource PhoneTextSubtleStyle}" 
+                               VerticalAlignment="Bottom" 
+                               Foreground="{StaticResource PhoneAccentBrush}" 
+                               Visibility="{Binding FiltersBlockVisibility}" />
+                </StackPanel>
+            </phone:Pivot.Title>
+            
             <phone:PivotItem Header="items" Name="ItemsPivotItem">
                 <toolkit:LongListMultiSelector Name="ItemsList"
-                                               ItemsSource="{Binding FilteredItems}"
+                                               ItemsSource="{Binding Items}"
                                                IsGroupingEnabled="False"
                                                ItemTemplate="{StaticResource ItemTemplate}"
                                                Margin="-12,0,0,0"

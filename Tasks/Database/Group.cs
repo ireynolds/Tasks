@@ -109,7 +109,7 @@ namespace Tasks // Database
         {
             if (this.Exists())
             {
-                foreach (var item in new List<Item>(Items))
+                foreach (var item in new List<Item>(UnfilteredItems))
                 {
                     this.DeleteItem(item);
                 }
@@ -131,7 +131,7 @@ namespace Tasks // Database
         {
             App.Database.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, this);
 
-            _items = null;
+            _unfilteredItems = null;
             _filteredItems = null;
             _groups = null;
 
