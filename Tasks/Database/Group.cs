@@ -1,17 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data.Linq;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tasks.Database;
 
 namespace Tasks // Database
 {
     public partial class Group
     {
-        public static IQueryable<Group> All
+        #region Finders
+
+        /* ------------------------------------------------------------- */
+        // Finders
+
+        public new static Table<Group> All
         {
             get { return App.Database.Groups; }
+        }
+
+        public static Group FindById(int Id)
+        {
+            var group = FindByIdOrDefault(Id);
+            if (group == null)
+            {
+                throw new ArgumentException();
+            }
+
+            return group;
+        }
+
+        public static Group FindByIdOrDefault(int Id)
+        {
+            // Make sure the search includes deleted groups.
+            return (from grp in App.Database.Groups
+                    where grp._id == Id
+                    select grp).FirstOrDefault();
         }
 
         public static IQueryable<Group> AllExceptInbox
@@ -36,7 +63,7 @@ namespace Tasks // Database
                 else if (_inbox == null)
                 {
                     var all = new List<Group>(Group.All);
-                    _inbox = Group.FindWithId((int)IsolatedStorageSettings.ApplicationSettings["InboxId"]);
+                    _inbox = Group.FindById((int)IsolatedStorageSettings.ApplicationSettings["InboxId"]);
                 }
 
                 return _inbox;
@@ -49,35 +76,69 @@ namespace Tasks // Database
             }
         }
 
-        public static Group Create(string Title = "")
-        {
-            var group = Group.New(Title);
-            group.Save();
-            return group;
-        }
+        #endregion
 
-        public static Group New(string Title = "")
+        #region CRUD
+
+        /* ------------------------------------------------------------- */
+        // CRUD
+
+        public static Group Build(string Title = "")
         {
             return new Group() { Title = Title };
         }
 
-        public static Group FindWithId(int Id)
+        public static Group Create(string Title = "")
         {
-            var group = FindWithIdOrDefault(Id);
-            if (group == null)
-            {
-                throw new ArgumentException();
-            }
-
+            var group = Group.Build(Title);
+            group.InsertNow();
             return group;
         }
 
-        public static Group FindWithIdOrDefault(int Id)
+        public override void Insert()
         {
-            // Make sure the search includes deleted groups.
-            return (from grp in App.Database.Groups
-                    where grp._id == Id
-                    select grp).FirstOrDefault();
+            App.Database.Groups.InsertOnSubmit(this);
         }
+
+        public override bool Exists()
+        {
+            return this.Equals(Group.FindByIdOrDefault(Id));
+        }
+
+        public override void Destroy()
+        {
+            if (this.Exists())
+            {
+                foreach (var item in new List<Item>(Items))
+                {
+                    this.DeleteItem(item);
+                }
+                this.IsDeleted = true;
+            }
+        }
+
+        public void DestroyOnSubmit()
+        {
+            All.DeleteOnSubmit(this);
+        }
+
+        public void InsertOnSubmit()
+        {
+            All.InsertOnSubmit(this);
+        }
+
+        public override void Reload()
+        {
+            App.Database.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, this);
+
+            _items = null;
+            _filteredItems = null;
+            _groups = null;
+
+            OnPropertyChanged();
+        }
+
+        #endregion
+
     }
 }

@@ -43,6 +43,18 @@ namespace Tasks.ViewModels
             }
         }
 
+        public ISet<int> ShownStatusesAsInt
+        {
+            get
+            {
+                var set = new HashSet<int>();
+                if (IsShowingActive) set.Add((int)Status.Active);
+                if (IsShowingDone)   set.Add((int)Status.Done);
+                if (IsShowingOnHold) set.Add((int)Status.OnHold);
+                return set;
+            }
+        }
+
         public static void EnsureExisting()
         {
             if (!IsolatedStorageSettings.ApplicationSettings.Contains("IsShowingActive"))

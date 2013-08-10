@@ -10,8 +10,13 @@ using Tasks.ViewModels;
 
 namespace Tasks // ViewModels
 {
-    public partial class Group : BindableBase
+    public partial class Group : DbItem<Group>
     {
+        #region Fundamental Properties
+
+        /* ------------------------------------------------------------- */
+        // Fundamental properties
+
         public int Id
         {
             get { return _id; }
@@ -34,6 +39,13 @@ namespace Tasks // ViewModels
             get { return _isDeleted; }
             set { _isDeleted = value; }
         }
+
+        #endregion
+
+        #region Computed Properties
+
+        /* ------------------------------------------------------------- */
+        // Computed Properties
 
         public string ItemsString
         {
@@ -72,6 +84,13 @@ namespace Tasks // ViewModels
             }
         }
 
+
+
+        #region Collections
+
+        /* ------------------------------------------------------------- */
+        // Collections
+
         public IEnumerable<IGrouping<Group, Item>> _constituents;
         public IEnumerable<IGrouping<Group, Item>> Constituents
         {
@@ -93,8 +112,10 @@ namespace Tasks // ViewModels
             {
                 if (_groups == null)
                 {
-                    _groups = new ObservableCollection<Group>();
-                    ReloadGroups();
+                    var elements = (from item in Items
+                                    where item._sourceId != Id
+                                    select Group.FindById(item._sourceId)).Distinct();
+                    ReloadCollection(ref _groups, elements);
                 }
                 return _groups; 
             }
@@ -107,8 +128,10 @@ namespace Tasks // ViewModels
             {
                 if (_items == null)
                 {
-                    _items = new ObservableCollection<Item>();
-                    ReloadItems();
+                    var elements = from entry in App.Database.GroupItemJoins
+                                   where entry._groupId == Id
+                                   select Item.FindById(entry._itemId);
+                    ReloadCollection(ref _items, elements);
                 }
 
                 return _items;
@@ -122,164 +145,153 @@ namespace Tasks // ViewModels
             {
                 if (_items == null)
                 {
-                    _items = new ObservableCollection<Item>();
-                    ReloadFilteredItems();
+                    var statuses = new Filter().ShownStatusesAsInt;
+                    var elements = from entry in Items
+                                   where statuses.Contains(entry._status)
+                                   select entry;
+                    ReloadCollection(ref _filteredItems, elements);
                 }
 
                 return _items;
             }
         }
 
-        public void Reload()
+        private ObservableCollection<GroupItemJoinTable> _groupItems;
+        public ObservableCollection<GroupItemJoinTable> GroupItems
         {
-            App.Database.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, this);
-            ReloadItems();
-            ReloadGroups();
-        }
-
-        private IQueryable<Item> ItemsForGroup()
-        {
-            var lst = new List<GroupItemJoinTable>(from entry in App.Database.GroupItemJoins
-                                                   select entry);
-
-            var query = from entry in App.Database.GroupItemJoins
-                        where entry._groupId == Id
-                        select Item.FindWithId(entry._itemId);
-            return query;
-        }
-
-        private void ReloadItems()
-        {
-            var query = ItemsForGroup();
-
-            if (_items == null)
-                _items = new ObservableCollection<Item>();
-
-            _items.Clear();
-            foreach (var item in query) _items.Add(item);
-        }
-
-        private void ReloadGroups()
-        {
-            var query = (from item in Items
-                         where item._sourceId != Id
-                         select Group.FindWithId(item._sourceId)).Distinct();
-
-            if (_groups == null)
-                _groups = new ObservableCollection<Group>();
-
-            _groups.Clear();
-            foreach (var group in query) _groups.Add(group);
-        }
-
-        private void ReloadFilteredItems()
-        {
-            var query = ItemsForGroup();
-
-            if (_filteredItems == null)
-                _filteredItems = new ObservableCollection<Item>();
-
-            _filteredItems.Clear();
-            foreach (var item in query) _filteredItems.Add(item);
-        }
-
-        public bool Exists()
-        {
-            return this.Equals(Group.FindWithIdOrDefault(Id));
-        }
-
-        public void Save()
-        {
-            if (!this.Exists())
+            get
             {
-                App.Database.Groups.InsertOnSubmit(this);
-            }
-            App.Database.SubmitChanges();
-            OnPropertyChanged();
-        }
-
-        public void Delete()
-        {
-            if (this.Exists())
-            {
-                foreach (var item in new List<Item>(Items))
+                if (_groupItems == null)
                 {
-                    this.DeleteItem(item);
+                    var elements = from tuple in App.Database.GroupItemJoins
+                                   where tuple._groupId == Id
+                                   select tuple;
+                    ReloadCollection(ref _groupItems, elements);
                 }
-                this.IsDeleted = true;
+
+                return _groupItems;
             }
         }
 
-        public void DeleteAndSubmit()
-        {
-            this.Delete();
-            this.Save();
-        }
+        #endregion
+        #endregion
 
+        #region CRUD for Items
+
+        /* ------------------------------------------------------------- */
+        // CRUD for Items
+
+        /// <summary>
+        /// Creates a new Item as a member of this and saves it to the database.
+        /// </summary>
+        /// <param name="Title"></param>
+        /// <param name="Description"></param>
         public void CreateItem(string Title = "", string Description = "")
         {
             if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
 
-            var item = Item.New(this, Title, Description);
-            this.MergeIntoThisAndSubmit(item);
+            var item = Item.Create(this, Title, Description);
+            this.MergeIntoThisNow(item);
         }
 
-        public void MergeIntoThis(Item Item)
-        {
-            if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
-
-            Item = Item.CreateClone();
-            var entry = new GroupItemJoinTable() { _groupId = Id, _itemId = Item.Id };
-            Items.Add(Item);
-
-            App.Database.GroupItemJoins.InsertOnSubmit(entry);
-        }
-
-        public void MergeIntoThisAndSubmit(Item Item)
-        {
-            this.MergeIntoThis(Item);
-            this.Save();
-        }
-
-        public void MergeIntoThis(Group Group)
-        {
-            _groups.Add(Group);
-            foreach (var item in Group.Items)
-            {
-                var clone = item.NewClone();
-                clone.Source = Group;
-                this.MergeIntoThis(clone);
-            }
-            OnPropertyChanged();
-        }
-
-        public void MergeIntoThisAndSubmit(Group Group)
-        {
-            this.MergeIntoThis(Group);
-            this.Save();
-        }
-
+        /// <summary>
+        /// Deletes Item from this and from the database.
+        /// </summary>
+        /// <param name="Item"></param>
         public void DeleteItem(Item Item)
         {
             if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
 
-            var entries = from tuple in App.Database.GroupItemJoins
-                          where tuple._groupId == Id && tuple._itemId == Item.Id
-                          select tuple;
+            Items.Remove(Item);
+            Item.Destroy();
 
-            foreach (var entry in entries)
-            {
-                this.Items.Remove(Item.FindWithId(entry._itemId));
-                App.Database.GroupItemJoins.DeleteOnSubmit(entry);
-            }
+            var groupItem = (from entry in GroupItems
+                             where entry._itemId == Item.Id
+                             select entry).First();
 
-            Item.Delete();
+            GroupItems.Remove(groupItem);
+            App.Database.GroupItemJoins.DeleteOnSubmit(groupItem);
         }
 
-        public void DeleteItemAndSubmit(Item Item)
+        /// <summary>
+        /// Deletes Item from this and saves to the database.
+        /// </summary>
+        /// <param name="Item"></param>
+        public void DeleteItemNow(Item Item)
         {
             this.DeleteItem(Item);
-            this.Save();
+            SubmitChanges();
         }
+
+        /// <summary>
+        /// Adds Item to this. No copies are made.
+        /// </summary>
+        /// <param name="Item"></param>
+        private void MergeIntoThis(Item Item)
+        {
+            if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
+
+            Items.Add(Item);
+
+            var entry = new GroupItemJoinTable() { _groupId = Id, _itemId = Item.Id };
+
+            GroupItems.Add(entry);
+            App.Database.GroupItemJoins.InsertOnSubmit(entry);
+        }
+
+        /// <summary>
+        /// Adds Item to this and saves to the database. No copies are made.
+        /// </summary>
+        /// <param name="Item"></param>
+        public void MergeIntoThisNow(Item Item)
+        {
+            this.MergeIntoThis(Item);
+            SubmitChanges();
+        }
+
+        /// <summary>
+        /// Adds to this a copy of each item in Group.
+        /// </summary>
+        /// <param name="Group"></param>
+        public void MergeIntoThis(Group Group)
+        {
+            Groups.Add(Group);
+            
+            var clones = new List<Item>();
+            foreach (var item in Group.Items)
+            {
+                var clone = item.BuildClone();
+
+                // This ensures that if Item1 was added to Group2 as part of Group1, 
+                // and then Group2 was added to Inbox, that Item1 in inbox is shown
+                // as coming from Group2 (and not Group1).
+                clone.Source = Group;
+
+                clones.Add(clone);
+                Item.All.InsertOnSubmit(clone);
+            }
+
+            // This ensures that all the clones have valid IDs
+            SubmitChanges();
+
+            foreach (var clone in clones)
+            {
+                this.MergeIntoThis(clone);
+            }
+
+            SubmitChanges();
+        }
+
+        /// <summary>
+        /// Adds to this a copy of each item in Group, and saves all changes to the database.
+        /// </summary>
+        /// <param name="Group"></param>
+        public void MergeIntoThisNow(Group Group)
+        {
+            this.MergeIntoThis(Group);
+            SubmitChanges();
+        }
+
+        #endregion
     }
 }

@@ -86,7 +86,7 @@ namespace Tasks.Views
             Space = new Space();
 
             var targetId = Int32.Parse(NavigationContext.QueryString["targetId"]);
-            Group = Group.FindWithId(targetId);
+            Group = Group.FindById(targetId);
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)

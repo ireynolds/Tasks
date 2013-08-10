@@ -65,7 +65,7 @@ namespace Tasks.Views
                 Mode = (Mode)Int32.Parse(mode);
 
                 var id = Int32.Parse(NavigationContext.QueryString["id"]);
-                Group = Group.FindWithId(id);
+                Group = Group.FindById(id);
             }
             else
             {
@@ -100,7 +100,7 @@ namespace Tasks.Views
             {
                 foreach (Item item in ItemsList.SelectedItems.ToList<Item>())
                 {
-                    Group.DeleteItemAndSubmit(item);
+                    Group.DeleteItemNow(item);
                 }
             }, "delete", "cancel");
         }
@@ -138,7 +138,7 @@ namespace Tasks.Views
         {
             Utils.Confirm("Delete group?", "All the items in this group will be deleted from your phone.", () =>
             {
-                Group.DeleteAndSubmit();
+                Group.DestroyNow();
                 NavigationService.GoBack();
             }, "delete", "cancel");
         }

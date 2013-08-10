@@ -62,14 +62,14 @@ namespace Tasks.Views.Items
             if (Mode == Mode.Create)
             {
                 var parentId = Int32.Parse(NavigationContext.QueryString["groupId"]);
-                ParentGroup = Group.FindWithId(parentId);
+                ParentGroup = Group.FindById(parentId);
 
-                Item = Item.New(ParentGroup);
+                Item = Item.Build(ParentGroup);
             }
             else
             {
                 var id = Int32.Parse(NavigationContext.QueryString["id"]);
-                Item = Item.FindWithId(id);
+                Item = Item.FindById(id);
             }
         }
 
@@ -89,11 +89,11 @@ namespace Tasks.Views.Items
         private void Ok(object sender, EventArgs e)
         {
             ApplicationBar.Disable();
-            Item.Save();
+            App.Database.SubmitChanges();
             
             if (Mode == Mode.Create)
             {
-                ParentGroup.MergeIntoThisAndSubmit(Item);
+                ParentGroup.MergeIntoThisNow(Item);
             }
 
             NavigationService.TryGoBack();

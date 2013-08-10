@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tasks.Common;
+using Tasks.ViewModels;
 
 namespace Tasks
 {
-    public partial class Item : BindableBase
+    public partial class Item : DbItem<Item>
     {
         public int Id
         {
@@ -34,7 +35,7 @@ namespace Tasks
             {
                 if (_source == null)
                 {
-                    _source = Group.FindWithId(_sourceId);
+                    _source = Group.FindById(_sourceId);
                 }
                 return _source;
             }
@@ -57,52 +58,6 @@ namespace Tasks
             {
                 return String.Format("[{0}]", Source.Title);
             }
-        }
-
-        public void Reload()
-        {
-            if (this.Exists())
-            {
-                App.Database.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, this);
-            }
-        }
-
-        public bool Exists()
-        {
-            return this.Equals(Item.FindWithIdOrDefault(Id));
-        }
-
-        public void Save()
-        {
-            if (!this.Exists())
-            {
-                App.Database.Items.InsertOnSubmit(this);
-            }
-            App.Database.SubmitChanges();
-        }
-
-        public void DeleteAndSave()
-        {
-            this.Delete();
-            this.Save();
-        }
-
-        public void Delete()
-        {
-            if (this.Exists())
-            {
-                App.Database.Items.DeleteOnSubmit(this);
-            }
-        }
-
-        public Item CreateClone()
-        {
-            return Item.Create(Source, Title, Description);
-        }
-
-        public Item NewClone()
-        {
-            return Item.New(Source, Title, Description);
         }
     }
 }

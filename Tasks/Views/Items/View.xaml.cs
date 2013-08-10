@@ -37,7 +37,7 @@ namespace Tasks.Views.Items
             base.OnNavigatedTo(e);
 
             var id = Int32.Parse(NavigationContext.QueryString["id"]);
-            Item = Item.FindWithId(id);
+            Item = Item.FindById(id);
         }
 
         private void Edit(object sender, EventArgs e)
@@ -49,7 +49,7 @@ namespace Tasks.Views.Items
         {
             Utils.Confirm("Delete item?", "This item will be deleted from your phone.", () =>
             {
-                Item.DeleteAndSave();
+                Item.DestroyNow();
                 NavigationService.TryGoBack();
             }, "delete", "cancel");
         }

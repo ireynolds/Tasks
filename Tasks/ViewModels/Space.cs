@@ -4,10 +4,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tasks.Common;
 
 namespace Tasks.ViewModels
 {
-    public class Space
+    public class Space : BindableBase
     {
         private ObservableCollection<Group> _groups;
         public ObservableCollection<Group> Groups

@@ -51,12 +51,12 @@ namespace Tasks.Views.Groups
             Mode = (Mode)Int32.Parse(NavigationContext.QueryString["mode"]);
             if (Mode == Mode.Create)
             {
-                Group = Group.New();
+                Group = Group.Build();
             }
             else
             {
                 var id = Int32.Parse(NavigationContext.QueryString["id"]);
-                Group = Group.FindWithId(id);
+                Group = Group.FindById(id);
             }
         }
 
@@ -85,7 +85,7 @@ namespace Tasks.Views.Groups
         private void Ok(object sender, EventArgs e)
         {
             ApplicationBar.Disable();
-            Group.Save();
+            App.Database.SubmitChanges();
             
             if (Mode == Mode.Create)
             {
