@@ -45,6 +45,12 @@ namespace Tasks
             }
         }
 
+        public Status Status
+        {
+            get { return (Status)_status; }
+            set { SetProperty(ref _status, (int)value); }
+        }
+
         public string GroupName
         {
             get

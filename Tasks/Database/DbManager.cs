@@ -50,7 +50,7 @@ namespace Tasks.Database
             var group2 = Group.Create("Group2");
             group2.CreateItem("Group2.1", "Description1");
             group2.CreateItem("Group2.2", "Description2");
-            group2.CreateItem("Group2.3", "Description3");            
+            group2.CreateItem("Group2.3", "Description3");
         }
 
         public void Clear()

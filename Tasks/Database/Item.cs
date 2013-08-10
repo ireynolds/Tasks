@@ -27,6 +27,8 @@ namespace Tasks
 
         public static Item FindWithId(int Id)
         {
+            var items = new List<Item>(from nitem in All select nitem);
+
             var item = FindWithIdOrDefault(Id);
             if (item == null)
                 throw new ArgumentException();

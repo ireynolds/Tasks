@@ -9,6 +9,8 @@ using Microsoft.Phone.Shell;
 using Tasks.Resources;
 using Tasks.Database;
 using System.Collections.Generic;
+using System.IO.IsolatedStorage;
+using Tasks.ViewModels;
 
 namespace Tasks
 {
@@ -66,6 +68,7 @@ namespace Tasks
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
             App.Database = DbManager.EnsureCreated();
+            Filter.EnsureExisting();
         }
 
         // Code to execute when the application is activated (brought to foreground)

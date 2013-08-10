@@ -93,15 +93,17 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Common\BindableBase.cs" />
-    <Compile Include="Common\LabeledTextBox.xaml.cs">
+    <Compile Include="Common\FilterUtils.cs" />
+    <Compile Include="ViewModels\BindableBase.cs" />
+    <Compile Include="Common\Controls\LabeledTextBox.xaml.cs">
       <DependentUpon>LabeledTextBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Common\Mode.cs" />
+    <Compile Include="Common\Enums\Mode.cs" />
     <Compile Include="Common\NavigationExtensions.cs" />
-    <Compile Include="Common\OkCancelApplicationBar.cs" />
+    <Compile Include="Common\Controls\OkCancelApplicationBar.cs" />
+    <Compile Include="Common\Enums\Status.cs" />
     <Compile Include="Common\Utils.cs" />
-    <Compile Include="Common\WatermarkedTextBox.xaml.cs">
+    <Compile Include="Common\Controls\WatermarkedTextBox.xaml.cs">
       <DependentUpon>WatermarkedTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Database\DbManager.cs" />
@@ -117,9 +119,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Filter.cs" />
     <Compile Include="ViewModels\Group.cs" />
     <Compile Include="ViewModels\Space.cs" />
     <Compile Include="ViewModels\Item.cs" />
+    <Compile Include="Views\Filters\StatusFilter.xaml.cs">
+      <DependentUpon>StatusFilter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Filters\View.xaml.cs">
+      <DependentUpon>View.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Space.xaml.cs">
       <DependentUpon>Space.xaml</DependentUpon>
     </Compile>
@@ -147,11 +156,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="Common\LabeledTextBox.xaml">
+    <Page Include="Common\Controls\LabeledTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Common\WatermarkedTextBox.xaml">
+    <Page Include="Common\Controls\WatermarkedTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Filters\StatusFilter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Filters\View.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -199,6 +216,7 @@
     <Content Include="Assets\Icons\appbar.add.png" />
     <Content Include="Assets\Icons\appbar.column.add.png" />
     <Content Include="Assets\Icons\appbar.edit.png" />
+    <Content Include="Assets\Icons\appbar.filter.png" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -12,6 +12,8 @@ namespace Tasks.Common
     {
         private const string _prefix = "/Views/";
 
+        private const string FiltersPath = _prefix + "Filters/View.xaml";
+
         private const string EditItemPath = _prefix + "Items/EditDetails.xaml";
         private const string ViewItemPath = _prefix + "Items/View.xaml";
 
@@ -75,6 +77,11 @@ namespace Tasks.Common
         public static void OpenCreateGroup(this NavigationService Nav)
         {
             Nav.Navigate(String.Format("{0}?mode={1}", EditGroupPath, (int)Mode.Create));
+        }
+
+        public static void OpenFilters(this NavigationService Nav)
+        {
+            Nav.Navigate(FiltersPath);
         }
     }
 }

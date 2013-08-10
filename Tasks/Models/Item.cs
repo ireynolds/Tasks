@@ -22,6 +22,9 @@ namespace Tasks
         [Column]
         public int _sourceId;
 
+        [Column]
+        public int _status;
+
         public Item() { }
     }
 }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tasks.Common;
 using Tasks.Database;
+using Tasks.ViewModels;
 
 namespace Tasks // ViewModels
 {
@@ -114,6 +115,21 @@ namespace Tasks // ViewModels
             }
         }
 
+        private ObservableCollection<Item> _filteredItems;
+        public ObservableCollection<Item> FilteredItems
+        {
+            get
+            {
+                if (_items == null)
+                {
+                    _items = new ObservableCollection<Item>();
+                    ReloadFilteredItems();
+                }
+
+                return _items;
+            }
+        }
+
         public void Reload()
         {
             App.Database.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, this);
@@ -121,11 +137,20 @@ namespace Tasks // ViewModels
             ReloadGroups();
         }
 
-        private void ReloadItems()
+        private IQueryable<Item> ItemsForGroup()
         {
+            var lst = new List<GroupItemJoinTable>(from entry in App.Database.GroupItemJoins
+                                                   select entry);
+
             var query = from entry in App.Database.GroupItemJoins
                         where entry._groupId == Id
                         select Item.FindWithId(entry._itemId);
+            return query;
+        }
+
+        private void ReloadItems()
+        {
+            var query = ItemsForGroup();
 
             if (_items == null)
                 _items = new ObservableCollection<Item>();
@@ -145,6 +170,17 @@ namespace Tasks // ViewModels
 
             _groups.Clear();
             foreach (var group in query) _groups.Add(group);
+        }
+
+        private void ReloadFilteredItems()
+        {
+            var query = ItemsForGroup();
+
+            if (_filteredItems == null)
+                _filteredItems = new ObservableCollection<Item>();
+
+            _filteredItems.Clear();
+            foreach (var item in query) _filteredItems.Add(item);
         }
 
         public bool Exists()
@@ -192,8 +228,7 @@ namespace Tasks // ViewModels
         {
             if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
 
-            Item = Item.NewClone();
-            App.Database.Items.InsertOnSubmit(Item);
+            Item = Item.CreateClone();
             var entry = new GroupItemJoinTable() { _groupId = Id, _itemId = Item.Id };
             Items.Add(Item);
 

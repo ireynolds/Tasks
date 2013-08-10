@@ -24,8 +24,9 @@
             <groupsviews:GroupPartial Margin="0,0,0,18" Tap="Group_Tap" />
         </DataTemplate>
         <shell:ApplicationBar x:Key="DefaultAppBar">
-            <shell:ApplicationBarIconButton Text="new" Click="New" IconUri="Assets/Icons/appbar.add.png" />
+            <shell:ApplicationBarIconButton Text="filter" Click="Filters" IconUri="Assets/Icons/appbar.filter.png" />
             <shell:ApplicationBarIconButton Text="group" Click="Groups" IconUri="Assets/Icons/appbar.column.add.png" />
+            <shell:ApplicationBarIconButton Text="new" Click="New" IconUri="Assets/Icons/appbar.add.png" />
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="delete" Click="DeleteGroup" />
                 <shell:ApplicationBarMenuItem Text="make fixtures" Click="MakeFixtures" />

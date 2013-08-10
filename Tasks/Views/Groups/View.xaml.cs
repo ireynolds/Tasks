@@ -147,5 +147,10 @@ namespace Tasks.Views
         {
 
         }
+
+        private void Filters(object sender, EventArgs e)
+        {
+            NavigationService.OpenFilters();
+        }
     }
 }
