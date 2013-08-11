@@ -165,8 +165,12 @@ namespace Tasks.Views
             {
                 foreach (Item item in ItemsList.SelectedItems.ToList<Item>())
                 {
-                    Group.DeleteItemNow(item);
+                    Group.DeleteItem(item);
                 }
+                
+                App.Database.SubmitChanges();
+                Group.Reload();
+
             }, "delete", "cancel");
         }
 
@@ -198,9 +202,9 @@ namespace Tasks.Views
         private void MakeFixtures(object sender, EventArgs e)
         {
             App.Database.MakeFixtures();
-            
+
             Group = Group.Inbox;
-            Mode = Mode.Inbox;
+            Group.Reload();
         }
 
         private void DeleteGroup(object sender, EventArgs e)

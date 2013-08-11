@@ -230,14 +230,12 @@ namespace Tasks // ViewModels
         {
             if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
 
-            UnfilteredItems.Remove(Item);
             Item.Destroy();
 
             var groupItem = (from entry in GroupItems
                              where entry._itemId == Item.Id
                              select entry).First();
 
-            GroupItems.Remove(groupItem);
             App.Database.GroupItemJoins.DeleteOnSubmit(groupItem);
         }
 
