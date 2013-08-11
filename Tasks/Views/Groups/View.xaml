@@ -29,6 +29,7 @@
             <shell:ApplicationBarIconButton Text="new" Click="New" IconUri="Assets/Icons/appbar.add.png" />
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="make fixtures" Click="MakeFixtures" />
+                <shell:ApplicationBarMenuItem Text="about+tips" Click="AboutAndTips" />
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
         <shell:ApplicationBar x:Key="NonInboxAppBar">

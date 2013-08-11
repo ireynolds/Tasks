@@ -258,5 +258,10 @@ namespace Tasks.Views
         {
             SetAllTo(ItemsList.SelectedItems.ToList<Item>(), Status.OnHold);
         }
+
+        private void AboutAndTips(object sender, EventArgs e)
+        {
+            NavigationService.OpenAboutAndTips();
+        }
     }
 }

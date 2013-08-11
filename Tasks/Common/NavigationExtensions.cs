@@ -21,6 +21,8 @@ namespace Tasks.Common
         private const string ViewGroupPath = _prefix + "Groups/View.xaml";
 
         private const string ViewSpacePath = _prefix + "Space.xaml";
+
+        private const string AboutAndTipsPath = _prefix + "AboutAndTips.xaml";
         
         public static void Navigate(this NavigationService Nav, string Uri)
         {
@@ -82,6 +84,11 @@ namespace Tasks.Common
         public static void OpenFilters(this NavigationService Nav)
         {
             Nav.Navigate(FiltersPath);
+        }
+
+        public static void OpenAboutAndTips(this NavigationService Nav)
+        {
+            Nav.Navigate(AboutAndTipsPath);
         }
     }
 }

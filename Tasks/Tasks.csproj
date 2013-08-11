@@ -125,6 +125,9 @@
     <Compile Include="ViewModels\Group.cs" />
     <Compile Include="ViewModels\Space.cs" />
     <Compile Include="ViewModels\Item.cs" />
+    <Compile Include="Views\AboutAndTips.xaml.cs">
+      <DependentUpon>AboutAndTips.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Filters\StatusFilter.xaml.cs">
       <DependentUpon>StatusFilter.xaml</DependentUpon>
     </Compile>
@@ -163,6 +166,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Common\Controls\WatermarkedTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AboutAndTips.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
