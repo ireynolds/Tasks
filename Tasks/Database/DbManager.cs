@@ -38,23 +38,26 @@ namespace Tasks.Database
 
             Filter.EnsureExisting();
 
-            Group.Inbox.CreateItem("Inbox.1", "Description1");
-            Group.Inbox.CreateItem("Inbox.2", "Description2");
-            Group.Inbox.CreateItem("Inbox.3", "Description3");
-            Group.Inbox.CreateItem("Inbox.4", "Description4");
+            Group.Inbox.CreateItem("Buy birthday present", "Pillow pet?");
+            Group.Inbox.CreateItem("Technical spec for scheduler", "");
+            Group.Inbox.CreateItem("Cake from ice cream store", "Peanut butter chocolate");
+            Group.Inbox.CreateItem("Scavenger hunt", "");
 
-            var group1 = Group.Create("Group1");
-            group1.CreateItem("Group1.1", "Description1");
-            group1.CreateItem("Group1.2", "Description2");
-            group1.CreateItem("Group1.3", "Description3");
-            group1.CreateItem("Group1.4", "Description4");
-            group1.CreateItem("Group1.5", "Description4");
+            var group1 = Group.Create("Burgers");
+            group1.CreateItem("Burger (3 lb)", "Mom: 85/15 %");
+            group1.CreateItem("Buns", "");
+            group1.CreateItem("mustard", "");
+            group1.CreateItem("ketchup", "");
+            group1.CreateItem("onion", "");
+            group1.CreateItem("pickle", "");
+            group1.CreateItem("lettuce", "shredded");
 
-            var group2 = Group.Create("Group2");
-            group2.CreateItem("Group2.1", "Description1");
-            group2.CreateItem("Group2.2", "Description2");
-            group2.CreateItem("Group2.3", "Description3");
-
+            var group2 = Group.Create("Burritos");
+            group2.CreateItem("Tortillas", "10 ct, medium");
+            group2.CreateItem("Refried beans", "jalapeno");
+            group2.CreateItem("Enchilada sauce", "");
+            group2.CreateItem("burger", "2 pounds");
+            group2.CreateItem("cheddar cheese", "do we have enough?");
         }
 
         public void ClearAllStores()
