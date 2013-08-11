@@ -131,9 +131,11 @@ namespace Tasks // Database
         {
             App.Database.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, this);
 
-            _unfilteredItems = null;
-            _filteredItems = null;
-            _groups = null;
+            // NOTE: For efficiency, this does not currently reload _all_ collections
+
+            ReloadCollection(ref _unfilteredItems, GetUnfilteredItems());
+            ReloadCollection(ref _filteredItems, GetFilteredItems());
+            ReloadCollection(ref _groups, GetGroups());
 
             OnPropertyChanged();
         }

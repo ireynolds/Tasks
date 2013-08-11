@@ -44,6 +44,7 @@ namespace Tasks.ViewModels
             if (Collection == null)
                 Collection = new ObservableCollection<E>();
 
+            Collection.Clear();
             foreach (var element in Elements)
                 Collection.Add(element);
         }

@@ -122,13 +122,17 @@ namespace Tasks // ViewModels
             {
                 if (_groups == null)
                 {
-                    var elements = (from item in UnfilteredItems
-                                    where item._sourceId != Id
-                                    select Group.FindById(item._sourceId)).Distinct();
-                    ReloadCollection(ref _groups, elements);
+                    ReloadCollection(ref _groups, GetGroups());
                 }
                 return _groups; 
             }
+        }
+
+        public IEnumerable<Group> GetGroups()
+        {
+            return (from item in UnfilteredItems
+                    where item._sourceId != Id
+                    select Group.FindById(item._sourceId)).Distinct();
         }
 
         private ObservableCollection<Item> _unfilteredItems;
@@ -138,14 +142,18 @@ namespace Tasks // ViewModels
             {
                 if (_unfilteredItems == null)
                 {
-                    var elements = from entry in App.Database.GroupItemJoins
-                                   where entry._groupId == Id
-                                   select Item.FindById(entry._itemId);
-                    ReloadCollection(ref _unfilteredItems, elements);
+                    ReloadCollection(ref _unfilteredItems, GetUnfilteredItems());
                 }
 
                 return _unfilteredItems;
             }
+        }
+
+        private IQueryable<Item> GetUnfilteredItems()
+        {
+            return from entry in App.Database.GroupItemJoins
+                           where entry._groupId == Id
+                           select Item.FindById(entry._itemId);
         }
 
         private ObservableCollection<Item> _filteredItems;
@@ -157,15 +165,19 @@ namespace Tasks // ViewModels
                 {
                     var all = UnfilteredItems;
 
-                    var statuses = new Filter().ShownStatuses;
-                    var elements = from entry in UnfilteredItems
-                                   where statuses.Contains((Status)entry._status)
-                                   select entry;
-                    ReloadCollection(ref _filteredItems, elements);
+                    ReloadCollection(ref _filteredItems, GetFilteredItems());
                 }
 
                 return _filteredItems;
             }
+        }
+
+        private IEnumerable<Item> GetFilteredItems()
+        {
+            var statuses = new Filter().ShownStatuses;
+            return from entry in UnfilteredItems
+                   where statuses.Contains((Status)entry._status)
+                   select entry;
         }
 
         private ObservableCollection<GroupItemJoinTable> _groupItems;
@@ -175,14 +187,18 @@ namespace Tasks // ViewModels
             {
                 if (_groupItems == null)
                 {
-                    var elements = from tuple in App.Database.GroupItemJoins
-                                   where tuple._groupId == Id
-                                   select tuple;
-                    ReloadCollection(ref _groupItems, elements);
+                    ReloadCollection(ref _groupItems, GetGroupItems());
                 }
 
                 return _groupItems;
             }
+        }
+
+        private IQueryable<GroupItemJoinTable> GetGroupItems()
+        {
+            return from tuple in App.Database.GroupItemJoins
+                   where tuple._groupId == Id
+                   select tuple;
         }
 
         #endregion

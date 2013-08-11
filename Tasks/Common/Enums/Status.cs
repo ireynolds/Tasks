@@ -10,6 +10,6 @@ namespace Tasks.Common
     {
         OnHold,
         Active,
-        Done
+        Complete
     }
 }

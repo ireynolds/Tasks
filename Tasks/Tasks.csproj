@@ -219,6 +219,8 @@
     <Content Include="Assets\Icons\appbar.column.add.png" />
     <Content Include="Assets\Icons\appbar.edit.png" />
     <Content Include="Assets\Icons\appbar.filter.png" />
+    <Content Include="Assets\Icons\appbar.activate.png" />
+    <Content Include="Assets\Icons\appbar.onhold.png" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

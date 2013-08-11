@@ -48,7 +48,7 @@ namespace Tasks
             get 
             {
                 var lst = new List<Status>();
-                if (IsShowingDone) lst.Add(Status.Done);
+                if (IsShowingDone) lst.Add(Status.Complete);
                 if (IsShowingActive) lst.Add(Status.Active);
                 if (IsShowingOnHold) lst.Add(Status.OnHold);
                 return lst;

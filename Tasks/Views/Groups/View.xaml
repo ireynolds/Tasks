@@ -37,8 +37,16 @@
                 <shell:ApplicationBarMenuItem Text="delete" Click="DeleteGroup" />
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
-        <shell:ApplicationBar x:Key="SelectionAppBar">
+        <shell:ApplicationBar x:Key="NonInboxSelectionAppBar">
             <shell:ApplicationBarIconButton Text="delete" Click="DeleteItems" IconUri="Assets/Icons/appbar.delete.png" />
+        </shell:ApplicationBar>
+        <shell:ApplicationBar x:Key="InboxSelectionAppBar">
+            <shell:ApplicationBarIconButton Text="complete" Click="Complete" IconUri="/Assets/Icons/appbar.check.png" />
+            <shell:ApplicationBarIconButton Text="activate" Click="Activate" IconUri="/Assets/Icons/appbar.activate.png" />
+            <shell:ApplicationBarIconButton Text="on hold" Click="OnHold" IconUri="/Assets/Icons/appbar.onhold.png" />
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="delete selected" Click="DeleteItems" />
+            </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.Resources>
     

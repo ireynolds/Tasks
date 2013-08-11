@@ -69,8 +69,18 @@ namespace Tasks.Views
         }
         
         private IApplicationBar SelectionAppBar 
-        { 
-            get { return (IApplicationBar)this.Resources["SelectionAppBar"]; } 
+        {
+            get
+            {
+                if (Mode == Mode.Inbox)
+                {
+                    return (IApplicationBar)this.Resources["InboxSelectionAppBar"];
+                }
+                else
+                {
+                    return (IApplicationBar)this.Resources["NonInboxSelectionAppBar"];
+                }
+            }
         }
 
         public ItemsPage()
@@ -174,6 +184,8 @@ namespace Tasks.Views
 
         private void Item_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            if (ItemsList.SelectedItems.Count > 0) return;
+
             var item = (sender as ItemPartial).DataContext as Item;
             NavigationService.OpenItem(item.Id);
         }
@@ -213,6 +225,34 @@ namespace Tasks.Views
         private void FiltersBlock_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.OpenFilters();
+        }
+
+        private void SetAllTo(IEnumerable<Item> Items, Status Status) 
+        {
+            foreach (Item item in ItemsList.SelectedItems)
+            {
+                item.Status = Status;
+            }
+
+            ItemsList.SelectedItems.Clear();
+
+            App.Database.SubmitChanges();
+            Group.Reload();
+        }
+
+        private void Complete(object sender, EventArgs e)
+        {
+            SetAllTo(ItemsList.SelectedItems.ToList<Item>(), Status.Complete);
+        }
+
+        private void Activate(object sender, EventArgs e)
+        {
+            SetAllTo(ItemsList.SelectedItems.ToList<Item>(), Status.Active);
+        }
+
+        private void OnHold(object sender, EventArgs e)
+        {
+            SetAllTo(ItemsList.SelectedItems.ToList<Item>(), Status.OnHold);
         }
     }
 }

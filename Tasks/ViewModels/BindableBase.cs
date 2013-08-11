@@ -21,9 +21,16 @@ namespace Tasks.Common
 
         protected void OnPropertyChanged(string PropertyName = null)
         {
-            if (PropertyChanged != null)
+            try
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
+                }
+            }
+            catch (ArgumentException)
+            {
+                // do nothing (Issue #7).
             }
         }
     }
