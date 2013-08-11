@@ -27,9 +27,17 @@ namespace Tasks.Views.Items
             }
         }
 
+        private ApplicationBarMenuItem CompleteMenuItem;
+        private ApplicationBarMenuItem ActivateMenuItem;
+        private ApplicationBarMenuItem PutOnHoldMenuItem;
+
         public DetailsPage()
         {
             InitializeComponent();
+
+            CompleteMenuItem = ApplicationBar.MenuItems[0] as ApplicationBarMenuItem;
+            ActivateMenuItem = ApplicationBar.MenuItems[1] as ApplicationBarMenuItem;
+            PutOnHoldMenuItem = ApplicationBar.MenuItems[2] as ApplicationBarMenuItem;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -38,6 +46,13 @@ namespace Tasks.Views.Items
 
             var id = Int32.Parse(NavigationContext.QueryString["id"]);
             Item = Item.FindById(id);
+
+            if (Item.Status == Status.Active)
+                ApplicationBar.MenuItems.Remove(ActivateMenuItem);
+            else if (Item.Status == Status.Complete)
+                ApplicationBar.MenuItems.Remove(CompleteMenuItem);
+            else
+                ApplicationBar.MenuItems.Remove(PutOnHoldMenuItem);
         }
 
         private void Edit(object sender, EventArgs e)
@@ -52,6 +67,24 @@ namespace Tasks.Views.Items
                 Item.DestroyNow();
                 NavigationService.TryGoBack();
             }, "delete", "cancel");
+        }
+
+        private void Complete(object sender, EventArgs e)
+        {
+            Item.Status = Status.Complete;
+            NavigationService.TryGoBack();
+        }
+
+        private void Activate(object sender, EventArgs e)
+        {
+            Item.Status = Status.Active;
+            NavigationService.TryGoBack();
+        }
+
+        private void OnHold(object sender, EventArgs e)
+        {
+            Item.Status = Status.OnHold;
+            NavigationService.TryGoBack();
         }
     }
 }

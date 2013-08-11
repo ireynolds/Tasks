@@ -39,6 +39,11 @@
         <shell:ApplicationBar>
             <shell:ApplicationBarIconButton Text="edit" IconUri="Assets/Icons/appbar.edit.png" Click="Edit" />
             <shell:ApplicationBarIconButton Text="delete" IconUri="Assets/Icons/appbar.delete.png" Click="Delete" />
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="mark as complete" Click="Complete" />
+                <shell:ApplicationBarMenuItem Text="mark as active" Click="Activate" />
+                <shell:ApplicationBarMenuItem Text="put on hold" Click="OnHold" />
+            </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

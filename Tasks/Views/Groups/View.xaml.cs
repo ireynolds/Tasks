@@ -118,7 +118,7 @@ namespace Tasks.Views
                 }
             }
 
-            // Setup the application bar
+            // Set up the application bar
             ApplicationBar = DefaultAppBar;
 
             // Adjust filters and pivot for inbox/non-inbox
@@ -127,7 +127,7 @@ namespace Tasks.Views
             {
                 if (Group.Groups.Count == 0)
                     MainPivot.Items.Remove(GroupsPivotItem);
-                else
+                else if (!MainPivot.Items.Contains(GroupsPivotItem))
                     MainPivot.Items.Add(GroupsPivotItem);
             } 
             else 
