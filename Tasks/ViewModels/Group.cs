@@ -130,7 +130,7 @@ namespace Tasks // ViewModels
 
         public IEnumerable<Group> GetGroups()
         {
-            return (from item in UnfilteredItems
+            return (from item in FilteredItems
                     where item._sourceId != Id
                     select Group.FindById(item._sourceId)).Distinct();
         }
