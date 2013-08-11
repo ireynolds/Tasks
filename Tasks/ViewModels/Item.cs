@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Tasks.Common;
 using Tasks.ViewModels;
 
@@ -43,6 +44,30 @@ namespace Tasks
             {
                 _sourceId = value.Id;
                 _source = value;
+            }
+        }
+
+        private Group _containingGroup;
+        public Group ContainingGroup
+        {
+            get 
+            {
+                if (_containingGroup == null)
+                {
+                    _containingGroup = (from entry in App.Database.GroupItemJoins
+                                        where entry._itemId == this._id
+                                        select Group.FindById(entry._groupId)).First();
+                }
+
+                return _containingGroup;
+            }
+        }
+
+        public Visibility IsGroupNameVisible
+        {
+            get
+            {
+                return (ContainingGroup.Id == Source.Id) ? Visibility.Collapsed : Visibility.Visible;
             }
         }
 

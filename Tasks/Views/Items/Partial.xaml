@@ -11,9 +11,9 @@
     
     <StackPanel x:Name="LayoutRoot" Background="{StaticResource PhoneBackgroundBrush}">
         <TextBlock Text="{Binding Title}" Margin="0,-12,12,0" Style="{StaticResource PhoneTextExtraLargeStyle}" />
-        <StackPanel Orientation="Horizontal" Margin="0,-6,12,0">
-            <TextBlock Text="{Binding GroupName}" FontWeight="Bold" Foreground="{StaticResource PhoneAccentBrush}" />
-            <TextBlock Text="{Binding Description}" Margin="6,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
+        <StackPanel Orientation="Horizontal" Margin="0,-4,12,0">
+            <TextBlock Text="{Binding GroupName}" Margin="0,0,6,0"  Visibility="{Binding IsGroupNameVisible}" FontWeight="Bold" Foreground="{StaticResource PhoneAccentBrush}" />
+            <TextBlock Text="{Binding Description}" Margin="0,0,0,0" Style="{StaticResource PhoneTextSubtleStyle}" />
         </StackPanel>
     </StackPanel>
 </UserControl>
