@@ -81,6 +81,14 @@ namespace Tasks
         {
             get
             {
+                return Source.Title;
+            }
+        }
+
+        public string BracketedGroupName
+        {
+            get
+            {
                 return String.Format("[{0}]", Source.Title);
             }
         }
