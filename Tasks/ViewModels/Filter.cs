@@ -59,7 +59,18 @@ namespace Tasks
         {
             get
             {
-                return String.Format("({0})", string.Join(", ", ShownStatuses).ToUpper());
+                if (ShownStatuses.Count == 0)
+                {
+                    return "NONE";
+                }
+                else if (ShownStatuses.Count == 1) 
+                {
+                    return ShownStatuses[0].ToString().ToUpper();
+                }
+                else
+                {
+                    return String.Format("({0})", string.Join(", ", ShownStatuses).ToUpper());
+                }
             }
         }
     }
