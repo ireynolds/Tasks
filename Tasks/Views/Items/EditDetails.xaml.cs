@@ -89,7 +89,8 @@ namespace Tasks.Views.Items
         private void Ok(object sender, EventArgs e)
         {
             ApplicationBar.Disable();
-            App.Database.SubmitChanges();
+
+            Item.InsertNow();
             
             if (Mode == Mode.Create)
             {
