@@ -29,45 +29,23 @@ namespace Tasks
             set { SetProperty(ref _description, value); }
         }
 
-        private Group _source;
-        public Group Source
+        public Group Container
         {
-            get 
-            {
-                if (_source == null)
-                {
-                    _source = Group.FindById(_sourceId);
-                }
-                return _source;
-            }
-            set  
-            {
-                _sourceId = value.Id;
-                _source = value;
-            }
+            get { return Group.FindById(_containerId); }
+            set { SetProperty(ref _containerId, value.Id); }
         }
 
-        private Group _containingGroup;
-        public Group ContainingGroup
+        public Group Source
         {
-            get 
-            {
-                if (_containingGroup == null)
-                {
-                    _containingGroup = (from entry in App.Database.GroupItemJoins
-                                        where entry._itemId == this._id
-                                        select Group.FindById(entry._groupId)).First();
-                }
-
-                return _containingGroup;
-            }
+            get { return Group.FindById(_sourceId); }
+            set { SetProperty(ref _sourceId, value.Id); }
         }
 
         public Visibility IsGroupNameVisible
         {
             get
             {
-                return (ContainingGroup.Id == Source.Id) ? Visibility.Collapsed : Visibility.Visible;
+                return (Container.Id == Source.Id) ? Visibility.Collapsed : Visibility.Visible;
             }
         }
 

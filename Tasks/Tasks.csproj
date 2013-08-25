@@ -109,7 +109,6 @@
     </Compile>
     <Compile Include="Database\DbManager.cs" />
     <Compile Include="Database\Group.cs" />
-    <Compile Include="Database\GroupItemJoinTable.cs" />
     <Compile Include="Database\Item.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Models\Group.cs" />

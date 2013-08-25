@@ -23,6 +23,9 @@ namespace Tasks
         public int _sourceId;
 
         [Column]
+        public int _containerId;
+
+        [Column]
         public int _status;
 
         public Item() 

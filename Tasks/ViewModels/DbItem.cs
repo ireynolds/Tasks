@@ -13,7 +13,7 @@ namespace Tasks.ViewModels
     {
         public static Table<T> All;
 
-        protected void SubmitChanges() 
+        public void SubmitChanges() 
         {
             App.Database.SubmitChanges();
             OnPropertyChanged();

@@ -17,7 +17,6 @@ namespace Tasks.Database
 
         public Table<Item> Items;
         public Table<Group> Groups;
-        public Table<GroupItemJoinTable> GroupItemJoins;
 
         public DbManager()
             : base(_connStringPrefix + _maindbFileName) { }
@@ -67,7 +66,6 @@ namespace Tasks.Database
 
             Items.DeleteAllOnSubmit(Items);
             Groups.DeleteAllOnSubmit(Groups);            
-            GroupItemJoins.DeleteAllOnSubmit(GroupItemJoins);
             SubmitChanges();
         }
     }

@@ -151,9 +151,9 @@ namespace Tasks // ViewModels
 
         private IQueryable<Item> GetUnfilteredItems()
         {
-            return from entry in App.Database.GroupItemJoins
-                           where entry._groupId == Id
-                           select Item.FindById(entry._itemId);
+            return from item in App.Database.Items
+                   where item._containerId == Id
+                   select item;
         }
 
         private ObservableCollection<Item> _filteredItems;
@@ -178,27 +178,6 @@ namespace Tasks // ViewModels
             return from entry in UnfilteredItems
                    where statuses.Contains((Status)entry._status)
                    select entry;
-        }
-
-        private ObservableCollection<GroupItemJoinTable> _groupItems;
-        public ObservableCollection<GroupItemJoinTable> GroupItems
-        {
-            get
-            {
-                if (_groupItems == null)
-                {
-                    ReloadCollection(ref _groupItems, GetGroupItems());
-                }
-
-                return _groupItems;
-            }
-        }
-
-        private IQueryable<GroupItemJoinTable> GetGroupItems()
-        {
-            return from tuple in App.Database.GroupItemJoins
-                   where tuple._groupId == Id
-                   select tuple;
         }
 
         #endregion
@@ -231,12 +210,6 @@ namespace Tasks // ViewModels
             if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
 
             Item.Destroy();
-
-            var groupItem = (from entry in GroupItems
-                             where entry._itemId == Item.Id
-                             select entry).First();
-
-            App.Database.GroupItemJoins.DeleteOnSubmit(groupItem);
         }
 
         /// <summary>
@@ -257,12 +230,10 @@ namespace Tasks // ViewModels
         {
             if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
 
+            Item.Container = this;
+            Item.SubmitChanges();
+
             UnfilteredItems.Add(Item);
-
-            var entry = new GroupItemJoinTable() { _groupId = Id, _itemId = Item.Id };
-
-            GroupItems.Add(entry);
-            App.Database.GroupItemJoins.InsertOnSubmit(entry);
         }
 
         /// <summary>
