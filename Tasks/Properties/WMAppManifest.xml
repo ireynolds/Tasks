@@ -4,11 +4,6 @@
   <App xmlns="" ProductID="{b3570f1f-f101-4d07-af1f-4c184262750c}" Title="Tasks" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Tasks author" Description="Sample description" Publisher="Tasks" PublisherID="{712791c0-a683-47b4-a2e3-015037828601}">
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
-      <Capability Name="ID_CAP_NETWORKING" />
-      <Capability Name="ID_CAP_MEDIALIB_AUDIO" />
-      <Capability Name="ID_CAP_MEDIALIB_PLAYBACK" />
-      <Capability Name="ID_CAP_SENSORS" />
-      <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
     </Capabilities>
     <Tasks>
       <DefaultTask Name="_default" NavigationPage="Views/Groups/View.xaml" />
