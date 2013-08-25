@@ -65,19 +65,19 @@ namespace Tasks.Views
                                     + "add all three to your inbox at once before you head out to the grocery store!"
                     },
 
-                    new Tip() {
-                        Title = "add part of a group",
-                        Description = "Don't want to add all the tasks in a group? (I need tortillas, but I already "
-                                    + "have cheese.) No problem! When viewing the list of groups, tap one to open it, " 
-                                    + "select only the tasks you want to add, and then tap the 'ok' icon button. How's "
-                                    + "that for efficiency?"
-                    },
+                    //new Tip() {
+                    //    Title = "add part of a group",
+                    //    Description = "Don't want to add all the tasks in a group? (I need tortillas, but I already "
+                    //                + "have cheese.) No problem! When viewing the list of groups, tap one to open it, " 
+                    //                + "select only the tasks you want to add, and then tap the 'ok' icon button. How's "
+                    //                + "that for efficiency?"
+                    //},
 
                     new Tip() {
                         Title = "put items on hold",
                         Description = "Don't want to see some tasks in your inbox just now? Select them and tap the "
-                                    + "'on hold' icon button (it looks like a 'pause' button). You won't see these "
-                                    + "items in your inbox until tomorrow!"
+                                    + "'on hold' icon button (it looks like a 'pause' button). Now these tasks will "
+                                    + "stay out of your inbox until you mark them as 'active' again!"
                     }
                 };
 
