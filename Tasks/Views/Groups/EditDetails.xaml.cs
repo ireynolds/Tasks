@@ -85,15 +85,15 @@ namespace Tasks.Views.Groups
         private void Ok(object sender, EventArgs e)
         {
             ApplicationBar.Disable();
-
-            Group.InsertNow();
             
             if (Mode == Mode.Create)
             {
+                Group.InsertNow();
                 NavigationService.OpenGroup(Group.Id);
             }
             else
             {
+                App.Database.SubmitChanges();
                 NavigationService.TryGoBack();
             }
         }

@@ -329,5 +329,10 @@ namespace Tasks.Views
                 NavigationService.TryGoBack();
             });
         }
+
+        private void EditDetails(object sender, EventArgs e)
+        {
+            NavigationService.OpenEditGroup(Group.Id);
+        }
     }
 }

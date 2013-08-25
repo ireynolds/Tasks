@@ -36,6 +36,7 @@
         <shell:ApplicationBar x:Key="NonInboxAppBar">
             <shell:ApplicationBarIconButton Text="new" Click="New" IconUri="Assets/Icons/appbar.add.png" />
             <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="edit details" Click="EditDetails" />
                 <shell:ApplicationBarMenuItem Text="delete" Click="DeleteGroup" />
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
