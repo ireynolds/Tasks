@@ -42,11 +42,15 @@ namespace Tasks.ViewModels
         protected void ReloadCollection<E>(ref ObservableCollection<E> Collection, IEnumerable<E> Elements)
         {
             if (Collection == null)
+            {
                 Collection = new ObservableCollection<E>();
+            }
 
             Collection.Clear();
             foreach (var element in Elements)
+            {
                 Collection.Add(element);
+            }
         }
     }
 }

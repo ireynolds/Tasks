@@ -133,9 +133,9 @@ namespace Tasks // Database
 
             // NOTE: For efficiency, this does not currently reload _all_ collections
 
-            ReloadCollection(ref _unfilteredItems, GetUnfilteredItems());
-            ReloadCollection(ref _filteredItems, GetFilteredItems());
-            ReloadCollection(ref _groups, GetGroups());
+            //ReloadCollection(ref _unfilteredItems, GetUnfilteredItems());
+            //ReloadCollection(ref _filteredItems, GetFilteredItems());
+            //ReloadCollection(ref _groups, GetGroups());
 
             OnPropertyChanged();
         }

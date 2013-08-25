@@ -171,6 +171,14 @@ namespace Tasks.Views
                 App.Database.SubmitChanges();
                 Group.Reload();
 
+                if (GroupsList.ItemsSource == null) return;
+                foreach (Group group in GroupsList.ItemsSource)
+                {
+                    group.Reload();
+                }
+
+                ItemsList.SelectedItems.Clear();
+
             }, "delete", "cancel");
         }
 

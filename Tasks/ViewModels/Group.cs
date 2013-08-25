@@ -105,30 +105,31 @@ namespace Tasks // ViewModels
             }
         }
 
-        public IEnumerable<IGrouping<Group, Item>> _constituents;
-        public IEnumerable<IGrouping<Group, Item>> Constituents
-        {
-            get
-            {
-                if (_constituents == null)
-                {
-                    _constituents = UnfilteredItems.GroupBy<Item, Group>((item) => item.Source);
-                }
+        //public IEnumerable<IGrouping<Group, Item>> _constituents;
+        //public IEnumerable<IGrouping<Group, Item>> Constituents
+        //{
+        //    get
+        //    {
+        //        if (_constituents == null)
+        //        {
+        //            _constituents = UnfilteredItems.GroupBy<Item, Group>((item) => item.Source);
+        //        }
 
-                return _constituents;
-            }
-        }
+        //        return _constituents;
+        //    }
+        //}
 
-        private ObservableCollection<Group> _groups;
+        //private ObservableCollection<Group> _groups;
         public ObservableCollection<Group> Groups
         {
             get 
             {
-                if (_groups == null)
-                {
-                    ReloadCollection(ref _groups, GetGroups());
-                }
-                return _groups; 
+                //if (_groups == null)
+                //{
+                //    ReloadCollection(ref _groups, GetGroups());
+                //}
+                //return _groups; 
+                return new ObservableCollection<Group>(GetGroups());
             }
         }
 
@@ -139,24 +140,23 @@ namespace Tasks // ViewModels
                     select Group.FindById(item._sourceId)).Distinct();
         }
 
-        private ObservableCollection<Item> _unfilteredItems;
+        //private ObservableCollection<Item> _unfilteredItems;
         public ObservableCollection<Item> UnfilteredItems
         {
             get
             {
-                if (_unfilteredItems == null)
-                {
-                    ReloadCollection(ref _unfilteredItems, GetUnfilteredItems());
-                }
+                //if (_unfilteredItems == null)
+                //{
+                //    ReloadCollection(ref _unfilteredItems, GetUnfilteredItems());
+                //}
 
-                return _unfilteredItems;
+                //return _unfilteredItems;
+                return new ObservableCollection<Item>(GetUnfilteredItems());
             }
         }
 
         private IQueryable<Item> GetUnfilteredItems()
         {
-            var lst = new List<Item>(App.Database.Items);
-
             if (Id == Inbox.Id)
             {
                 return from item in App.Database.Items
@@ -178,19 +178,18 @@ namespace Tasks // ViewModels
             }
         }
 
-        private ObservableCollection<Item> _filteredItems;
+        //private ObservableCollection<Item> _filteredItems;
         public ObservableCollection<Item> FilteredItems
         {
             get
             {
-                if (_filteredItems == null)
-                {
-                    var all = UnfilteredItems;
+                //if (_filteredItems == null)
+                //{
+                //    ReloadCollection(ref _filteredItems, GetFilteredItems());
+                //}
 
-                    ReloadCollection(ref _filteredItems, GetFilteredItems());
-                }
-
-                return _filteredItems;
+                //return _filteredItems;
+                return new ObservableCollection<Item>(GetFilteredItems());
             }
         }
 
@@ -311,7 +310,6 @@ namespace Tasks // ViewModels
         public void MergeIntoThisNow(Group Group)
         {
             this.MergeIntoThis(Group);
-            SubmitChanges();
         }
 
         #endregion
