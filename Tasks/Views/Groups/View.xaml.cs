@@ -128,6 +128,29 @@ namespace Tasks.Views
             // Set up the application bar
             ApplicationBar = DefaultAppBar;
 
+            UpdateUI();
+        }
+
+        private void DisableSelection()
+        {
+            ItemsList.SelectedItems.Clear();
+            GroupsList.SelectedItems.Clear();
+            ApplicationBar = DefaultAppBar;
+        }
+
+        private void UpdateUI()
+        {
+            Filter.Reload();
+            Group.Reload();
+
+            if (GroupsList.ItemsSource != null)
+            {
+                foreach (Group group in GroupsList.ItemsSource)
+                {
+                    group.Reload();
+                }
+            }
+
             // Adjust filters and pivot for inbox/non-inbox
             Group.FiltersAreEnabled = Filter.AreFiltersEnabled = ShouldShowInboxControls();
             if (Mode == Mode.Inbox)
@@ -136,28 +159,19 @@ namespace Tasks.Views
                     MainPivot.Items.Remove(GroupsPivotItem);
                 else if (!MainPivot.Items.Contains(GroupsPivotItem))
                     MainPivot.Items.Add(GroupsPivotItem);
-            } 
-            else 
+            }
+            else
             {
                 MainPivot.Items.Remove(GroupsPivotItem);
-            }
-
-            Filter.Reload();
-            Group.Reload();
-
-            if (GroupsList.ItemsSource == null) return;
-            foreach (Group group in GroupsList.ItemsSource)
-            {
-                group.Reload();
             }
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
             base.OnBackKeyPress(e);
-            if (ItemsList.SelectedItems.Count > 0)
+            if (ItemsList.SelectedItems.Count > 0 || GroupsList.SelectedItems.Count > 0)
             {
-                ItemsList.SelectedItems.Clear();
+                DisableSelection();
                 e.Cancel = true;
             }
         }
@@ -188,28 +202,22 @@ namespace Tasks.Views
                 }
                 
                 App.Database.SubmitChanges();
-                Group.Reload();
-
-                if (GroupsList.ItemsSource == null) return;
-                foreach (Group group in GroupsList.ItemsSource)
-                {
-                    group.Reload();
-                }
-
-                ItemsList.SelectedItems.Clear();
+                UpdateUI();
+                DisableSelection();
 
             }, "delete", "cancel");
         }
 
         private void ItemsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ItemsList.SelectedItems.Count == 0)
+            if (ItemsList.SelectedItems.Count > 0 || GroupsList.SelectedItems.Count > 0)
             {
-                ApplicationBar = DefaultAppBar;
+                ApplicationBar = SelectionAppBar;
+                (ApplicationBar.MenuItems[0] as ApplicationBarMenuItem).IsEnabled = (GroupsList.SelectedItems.Count == 0);
             }
             else
             {
-                ApplicationBar = SelectionAppBar;
+                ApplicationBar = DefaultAppBar;
             }
         }
 
@@ -268,30 +276,40 @@ namespace Tasks.Views
 
         private void SetAllTo(IEnumerable<Item> Items, Status Status) 
         {
-            foreach (Item item in ItemsList.SelectedItems)
+            foreach (Item item in Items)
             {
                 item.Status = Status;
             }
 
-            ItemsList.SelectedItems.Clear();
-
             App.Database.SubmitChanges();
-            Group.Reload();
+        }
+
+        private void SetAllTo(Status Status)
+        {
+            SetAllTo(ItemsList.SelectedItems.ToList<Item>(), Status);
+
+            foreach (Group group in GroupsList.SelectedItems)
+            {
+                SetAllTo(group.Items, Status);
+            }
+
+            DisableSelection();
+            UpdateUI();
         }
 
         private void Complete(object sender, EventArgs e)
         {
-            SetAllTo(ItemsList.SelectedItems.ToList<Item>(), Status.Complete);
+            SetAllTo(Status.Complete);
         }
 
         private void Activate(object sender, EventArgs e)
         {
-            SetAllTo(ItemsList.SelectedItems.ToList<Item>(), Status.Active);
+            SetAllTo(Status.Active);
         }
 
         private void OnHold(object sender, EventArgs e)
         {
-            SetAllTo(ItemsList.SelectedItems.ToList<Item>(), Status.OnHold);
+            SetAllTo(Status.OnHold);
         }
 
         private void AboutAndTips(object sender, EventArgs e)

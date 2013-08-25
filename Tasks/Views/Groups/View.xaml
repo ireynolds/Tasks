@@ -83,7 +83,7 @@
                                                IsGroupingEnabled="False"
                                                ItemTemplate="{StaticResource GroupTemplate}"
                                                Margin="-12,0,0,0"
-                                               SelectionChanged="GroupsList_SelectionChanged"/>
+                                               SelectionChanged="ItemsList_SelectionChanged"/>
             </phone:PivotItem>
         </phone:Pivot>
     </Grid>
