@@ -280,15 +280,15 @@ namespace Tasks // ViewModels
         /// Adds to this a copy of each item in Group.
         /// </summary>
         /// <param name="Group"></param>
-        public void MergeIntoThis(Group Group)
+        public void MergeIntoThis(Group Source, IEnumerable<Item> Items)
         {
-            var groupClone = Group.Create(Group.Title);
+            var groupClone = Group.Create(Source.Title);
             groupClone.Container = this;
 
-            Groups.Add(Group);
+            Groups.Add(groupClone);
            
             var clones = new List<Item>();
-            foreach (var item in Group.UnfilteredItems)
+            foreach (var item in Items)
             {
                 var clone = item.BuildClone();
 
@@ -316,9 +316,9 @@ namespace Tasks // ViewModels
         /// Adds to this a copy of each item in Group, and saves all changes to the database.
         /// </summary>
         /// <param name="Group"></param>
-        public void MergeIntoThisNow(Group Group)
+        public void MergeIntoThisNow(Group Source, IEnumerable<Item> Items)
         {
-            this.MergeIntoThis(Group);
+            this.MergeIntoThis(Source, Items);
         }
 
         #endregion

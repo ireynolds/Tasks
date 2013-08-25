@@ -325,15 +325,7 @@ namespace Tasks.Views
         {
             Utils.Confirm("Merge into Inbox?", "All the selected items will be merged into Inbox.", () =>
             {
-                foreach (Item item in ItemsList.SelectedItems)
-                {
-                    var clone = item.BuildClone();
-                    clone.Insert();
-
-                    Group.Inbox.MergeIntoThis(clone);
-                }
-
-                App.Database.SubmitChanges();
+                Group.Inbox.MergeIntoThisNow(Group, ItemsList.SelectedItems.ToList<Item>());
                 NavigationService.TryGoBack();
             });
         }

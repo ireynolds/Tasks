@@ -123,7 +123,7 @@ namespace Tasks.Views
             {
                 foreach (Group group in GroupsList.SelectedItems)
                 {
-                    Group.MergeIntoThis(group);
+                    Group.MergeIntoThis(group, group.UnfilteredItems);
                 }
                 NavigationService.TryGoBack();
             }, "merge", "cancel");

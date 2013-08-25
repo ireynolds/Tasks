@@ -94,7 +94,7 @@ namespace Tasks.Database
             // Add several groups to the 
             for (int i = 0; i < 0; i++)
             {
-                Group.Inbox.MergeIntoThisNow(groups[i]);
+                Group.Inbox.MergeIntoThisNow(groups[i], groups[i].UnfilteredItems);
             }
         }
 
