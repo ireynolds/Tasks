@@ -138,6 +138,12 @@ namespace Tasks.Views
 
             Filter.Reload();
             Group.Reload();
+
+            if (GroupsList.ItemsSource == null) return;
+            foreach (Group group in GroupsList.ItemsSource)
+            {
+                group.Reload();
+            }
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
