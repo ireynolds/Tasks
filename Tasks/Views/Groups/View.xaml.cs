@@ -57,7 +57,7 @@ namespace Tasks.Views
         { 
             get 
             {
-                if (Mode == Mode.Inbox)
+                if (ShouldShowInboxControls())
                 {
                     return (IApplicationBar)this.Resources["InboxAppBar"];
                 }
@@ -72,7 +72,7 @@ namespace Tasks.Views
         {
             get
             {
-                if (Mode == Mode.Inbox)
+                if (ShouldShowInboxControls())
                 {
                     return (IApplicationBar)this.Resources["InboxSelectionAppBar"];
                 }
@@ -119,11 +119,17 @@ namespace Tasks.Views
                 }
             }
 
+            // Remove the 'merge into group' button if necessary
+            if (Group.Container != null && Group.Inbox.Id == Group.Container.Id)
+            {
+                DefaultAppBar.Buttons.RemoveAt(1);
+            }
+
             // Set up the application bar
             ApplicationBar = DefaultAppBar;
 
             // Adjust filters and pivot for inbox/non-inbox
-            Group.FiltersAreEnabled = Filter.AreFiltersEnabled = (Mode == Mode.Inbox || Group.Container.Id == Group.Inbox.Id);
+            Group.FiltersAreEnabled = Filter.AreFiltersEnabled = ShouldShowInboxControls();
             if (Mode == Mode.Inbox)
             {
                 if (Group.Groups.Count == 0)
@@ -154,6 +160,12 @@ namespace Tasks.Views
                 ItemsList.SelectedItems.Clear();
                 e.Cancel = true;
             }
+        }
+
+        private bool ShouldShowInboxControls()
+        {
+            return Mode == Mode.Inbox ||
+                   (Group.Container != null && Group.Container.Id == Group.Inbox.Id);
         }
 
         private void New(object sender, EventArgs e)
