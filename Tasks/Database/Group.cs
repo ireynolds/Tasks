@@ -129,7 +129,10 @@ namespace Tasks // Database
 
         public override void Reload()
         {
-            App.Database.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, this);
+            if (this.Exists())
+            {
+                App.Database.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, this);
+            }
 
             // NOTE: For efficiency, this does not currently reload _all_ collections
 
