@@ -91,7 +91,8 @@ namespace Tasks.Views
 
             if (!Debugger.IsAttached)
             {
-                // Remove the "make fixtures" menuitem
+                // Remove the "make fixtures" menuitems
+                (this.Resources["InboxAppBar"] as IApplicationBar).MenuItems.RemoveAt(1);
                 (this.Resources["InboxAppBar"] as IApplicationBar).MenuItems.RemoveAt(0);
             }
         }
@@ -210,6 +211,14 @@ namespace Tasks.Views
         private void MakeFixtures(object sender, EventArgs e)
         {
             App.Database.MakeFixtures();
+
+            Group = Group.Inbox;
+            Group.Reload();
+        }
+
+        private void MakeBigFixtures(object sender, EventArgs e)
+        {
+            App.Database.MakeBigFixtures();
 
             Group = Group.Inbox;
             Group.Reload();

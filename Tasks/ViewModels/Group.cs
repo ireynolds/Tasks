@@ -222,6 +222,16 @@ namespace Tasks // ViewModels
             this.MergeIntoThisNow(item);
         }
 
+        public void BuildItem(string Title = "", string Description = "")
+        {
+            if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
+
+            var item = Item.Build(this, Title, Description);
+            item.Insert();
+
+            this.MergeIntoThis(item);
+        }
+
         /// <summary>
         /// Deletes Item from this and from the database.
         /// </summary>
@@ -252,7 +262,6 @@ namespace Tasks // ViewModels
             if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
 
             Item.Container = this;
-            Item.SubmitChanges();
 
             UnfilteredItems.Add(Item);
         }
