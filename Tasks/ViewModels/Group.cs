@@ -54,7 +54,7 @@ namespace Tasks // ViewModels
             {
                 StringBuilder sb = new StringBuilder();
 
-                IEnumerator<Item> iter = UnfilteredItems.GetEnumerator();
+                IEnumerator<Item> iter = FilteredItems.GetEnumerator();
                 if (iter.MoveNext())
                 {
                     sb.Append(iter.Current.Title);
