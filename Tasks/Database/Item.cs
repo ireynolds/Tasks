@@ -77,6 +77,7 @@ namespace Tasks
             if (this.Exists())
             {
                 App.Database.Items.DeleteOnSubmit(this);
+                this.Source.Reload();
             }
         }
     }

@@ -19,9 +19,13 @@ namespace Tasks // Models
         [Column]
         public bool _isDeleted;
 
+        [Column]
+        public int _containerId;
+
         public Group() 
         {
             _isDeleted = false;
+            _containerId = -1;
         }
     }
 }

@@ -29,15 +29,16 @@ namespace Tasks // ViewModels
             set { SetProperty(ref _title, value); }
         }
 
-        public string UppercaseTitle
-        {
-            get { return _title.ToUpper(); }
-        }
-
         public bool IsDeleted
         {
             get { return _isDeleted; }
             set { _isDeleted = value; }
+        }
+
+        public Group Container
+        {
+            get { return (_containerId == -1) ? null : Group.FindById(_containerId); }
+            set { SetProperty(ref _containerId, value.Id); }
         }
 
         #endregion
@@ -76,6 +77,11 @@ namespace Tasks // ViewModels
             }
         }
 
+        public string UppercaseTitle
+        {
+            get { return _title.ToUpper(); }
+        }
+
         public string CountString
         {
             get
@@ -83,8 +89,6 @@ namespace Tasks // ViewModels
                 return String.Format("[{0} items]", UnfilteredItems.Count);
             }
         }
-
-
 
         #region Collections
 
@@ -151,9 +155,27 @@ namespace Tasks // ViewModels
 
         private IQueryable<Item> GetUnfilteredItems()
         {
-            return from item in App.Database.Items
-                   where item._containerId == Id
-                   select item;
+            var lst = new List<Item>(App.Database.Items);
+
+            if (Id == Inbox.Id)
+            {
+                return from item in App.Database.Items
+                       where item._containerId == Id
+                       select item;
+            }
+            else if (_containerId == Inbox.Id)
+            {
+                return from item in App.Database.Items
+                       where item._containerId == Inbox.Id
+                          && item._sourceId == Id
+                       select item;
+            }
+            else // _containerId == -1
+            {
+                return from item in App.Database.Items
+                       where item._containerId == Id
+                       select item;
+            }
         }
 
         private ObservableCollection<Item> _filteredItems;
@@ -252,8 +274,11 @@ namespace Tasks // ViewModels
         /// <param name="Group"></param>
         public void MergeIntoThis(Group Group)
         {
+            var groupClone = Group.Create(Group.Title);
+            groupClone.Container = this;
+
             Groups.Add(Group);
-            
+           
             var clones = new List<Item>();
             foreach (var item in Group.UnfilteredItems)
             {
@@ -262,7 +287,7 @@ namespace Tasks // ViewModels
                 // This ensures that if Item1 was added to Group2 as part of Group1, 
                 // and then Group2 was added to Inbox, that Item1 in inbox is shown
                 // as coming from Group2 (and not Group1).
-                clone.Source = Group;
+                clone.Source = groupClone;
 
                 clones.Add(clone);
                 Item.All.InsertOnSubmit(clone);

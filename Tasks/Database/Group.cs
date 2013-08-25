@@ -46,7 +46,7 @@ namespace Tasks // Database
             get 
             {
                 return from grp in All
-                       where grp._id != Inbox.Id && !grp._isDeleted
+                       where grp._id != Inbox.Id && !grp._isDeleted && grp._containerId == -1
                        select grp; 
             }
         }

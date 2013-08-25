@@ -31,6 +31,7 @@ namespace Tasks
         public Item() 
         {
             _status = (int)Tasks.Common.Status.Active;
+            _containerId = -1;
         }
     }
 }
