@@ -123,7 +123,7 @@ namespace Tasks.Views
             ApplicationBar = DefaultAppBar;
 
             // Adjust filters and pivot for inbox/non-inbox
-            Group.FiltersAreEnabled = Filter.AreFiltersEnabled = (Mode == Mode.Inbox);
+            Group.FiltersAreEnabled = Filter.AreFiltersEnabled = (Mode == Mode.Inbox || Group.Container.Id == Group.Inbox.Id);
             if (Mode == Mode.Inbox)
             {
                 if (Group.Groups.Count == 0)

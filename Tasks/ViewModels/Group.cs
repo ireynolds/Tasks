@@ -86,7 +86,7 @@ namespace Tasks // ViewModels
         {
             get
             {
-                return String.Format("[{0} items]", UnfilteredItems.Count);
+                return String.Format("[{0} items]", FilteredItems.Count);
             }
         }
 
