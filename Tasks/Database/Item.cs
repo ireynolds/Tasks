@@ -60,6 +60,7 @@ namespace Tasks
             {
                 App.Database.Refresh(System.Data.Linq.RefreshMode.OverwriteCurrentValues, this);
             }
+            OnPropertyChanged();
         }
 
         public override void Insert()

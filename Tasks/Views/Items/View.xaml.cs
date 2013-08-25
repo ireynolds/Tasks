@@ -46,6 +46,7 @@ namespace Tasks.Views.Items
 
             var id = Int32.Parse(NavigationContext.QueryString["id"]);
             Item = Item.FindById(id);
+            Item.Reload();
 
             if (Item.Status == Status.Active)
                 ApplicationBar.MenuItems.Remove(ActivateMenuItem);

@@ -89,13 +89,14 @@ namespace Tasks.Views.Items
         private void Ok(object sender, EventArgs e)
         {
             ApplicationBar.Disable();
-
-            Item.InsertNow();
             
             if (Mode == Mode.Create)
             {
+                Item.InsertNow();
                 ParentGroup.MergeIntoThisNow(Item);
             }
+
+            App.Database.SubmitChanges();
 
             NavigationService.TryGoBack();
         }
