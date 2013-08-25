@@ -40,6 +40,7 @@
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
         <shell:ApplicationBar x:Key="NonInboxSelectionAppBar">
+            <shell:ApplicationBarIconButton Text="ok" Click="Ok" IconUri="/Assets/Icons/appbar.check.png" />
             <shell:ApplicationBarIconButton Text="delete" Click="DeleteItems" IconUri="Assets/Icons/appbar.delete.png" />
         </shell:ApplicationBar>
         <shell:ApplicationBar x:Key="InboxSelectionAppBar">

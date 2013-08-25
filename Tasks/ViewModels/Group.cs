@@ -257,7 +257,7 @@ namespace Tasks // ViewModels
         /// Adds Item to this. No copies are made.
         /// </summary>
         /// <param name="Item"></param>
-        private void MergeIntoThis(Item Item)
+        public void MergeIntoThis(Item Item)
         {
             if (!this.Exists()) throw new InvalidOperationException("Cannot add an Item to a Group without a valid database id.");
 

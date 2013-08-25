@@ -65,13 +65,13 @@ namespace Tasks.Views
                                     + "add all three to your inbox at once before you head out to the grocery store!"
                     },
 
-                    //new Tip() {
-                    //    Title = "add part of a group",
-                    //    Description = "Don't want to add all the tasks in a group? (I need tortillas, but I already "
-                    //                + "have cheese.) No problem! When viewing the list of groups, tap one to open it, " 
-                    //                + "select only the tasks you want to add, and then tap the 'ok' icon button. How's "
-                    //                + "that for efficiency?"
-                    //},
+                    new Tip() {
+                        Title = "add part of a group",
+                        Description = "Don't want to add all the tasks in a group? (I need tortillas, but I already "
+                                    + "have cheese.) No problem! When viewing the list of groups, tap one to open it, " 
+                                    + "select only the tasks you want to add, and then tap the 'ok' icon button. How's "
+                                    + "that for efficiency?"
+                    },
 
                     new Tip() {
                         Title = "put items on hold",

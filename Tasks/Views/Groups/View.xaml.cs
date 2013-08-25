@@ -213,7 +213,11 @@ namespace Tasks.Views
             if (ItemsList.SelectedItems.Count > 0 || GroupsList.SelectedItems.Count > 0)
             {
                 ApplicationBar = SelectionAppBar;
-                (ApplicationBar.MenuItems[0] as ApplicationBarMenuItem).IsEnabled = (GroupsList.SelectedItems.Count == 0);
+
+                if (ShouldShowInboxControls())
+                {
+                    (ApplicationBar.MenuItems[0] as ApplicationBarMenuItem).IsEnabled = (GroupsList.SelectedItems != null && GroupsList.SelectedItems.Count == 0);
+                }
             }
             else
             {
@@ -315,6 +319,23 @@ namespace Tasks.Views
         private void AboutAndTips(object sender, EventArgs e)
         {
             NavigationService.OpenAboutAndTips();
+        }
+
+        private void Ok(object sender, EventArgs e)
+        {
+            Utils.Confirm("Merge into Inbox?", "All the selected items will be merged into Inbox.", () =>
+            {
+                foreach (Item item in ItemsList.SelectedItems)
+                {
+                    var clone = item.BuildClone();
+                    clone.Insert();
+
+                    Group.Inbox.MergeIntoThis(clone);
+                }
+
+                App.Database.SubmitChanges();
+                NavigationService.TryGoBack();
+            });
         }
     }
 }
