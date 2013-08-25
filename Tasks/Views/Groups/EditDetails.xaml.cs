@@ -85,7 +85,8 @@ namespace Tasks.Views.Groups
         private void Ok(object sender, EventArgs e)
         {
             ApplicationBar.Disable();
-            App.Database.SubmitChanges();
+
+            Group.InsertNow();
             
             if (Mode == Mode.Create)
             {
